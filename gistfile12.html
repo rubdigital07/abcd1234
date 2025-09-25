@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chúc ngày mới tốt lành 🌅</title>
+<style>
+  body { margin:0; font-family:"Segoe UI",sans-serif; overflow:hidden; background:#0f172a; color:#fff; }
+  section { display:none; height:100vh; width:100vw; align-items:center; justify-content:center; flex-direction:column; text-align:center; }
+  section.active { display:flex; }
+  h1 { font-size:clamp(22px,5vw,48px); margin:20px; animation:fadeIn 2s forwards; cursor:default;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .btn { padding:14px 28px; margin:10px; font-size:18px; border:0; border-radius:12px; cursor:pointer; color:#fff;
+         background:linear-gradient(45deg,#f43f5e,#ec4899,#a855f7); transition:.2s; }
+  .btn:hover{transform:scale(1.05)}
+  /* mặt trời */
+  .sun { width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,#fde68a,#f59e0b);
+         position:absolute; bottom:-150px; left:50%; transform:translateX(-50%); animation:sunrise 5s forwards; cursor:pointer;}
+  @keyframes sunrise { to{ bottom:100px; } }
+  /* hiệu ứng rơi */
+  .fall { position:absolute; font-size:24px; animation:falling 5s linear forwards; }
+  @keyframes falling { 0%{transform:translateY(-50px);opacity:0} 20%{opacity:1} 100%{transform:translateY(110vh);opacity:0} }
+  /* stage cuối */
+  #finalText { transition: all 1s ease; }
+  canvas{position:fixed;top:0;left:0;pointer-events:none;}
+  .heart { position:absolute; font-size:22px; animation:rise 4s linear forwards; pointer-events:none;}
+  @keyframes rise{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-120vh);opacity:0}}
+</style>
+</head>
+<body>
+  <!-- Stage 1 -->
+  <section id="s1" class="active">
+    <div class="sun"></div>
+    <h1>Chào buổi sáng 🌅</h1>
+    <button id="startBtn" class="btn">Bắt đầu ngày mới</button>
+  </section>
+
+  <!-- Stage 2 -->
+  <section id="s2">
+    <h1 id="typing"></h1>
+    <div>
+      <button class="btn choice" data-type="vui">Muốn vui vẻ 😄</button>
+      <button class="btn choice" data-type="may">Muốn may mắn 🍀</button>
+      <button class="btn choice" data-type="binh">Muốn bình an 🌸</button>
+      <button class="btn" id="noFun">Không muốn vui vẻ 🙃</button>
+    </div>
+  </section>
+
+  <!-- Stage 3 -->
+  <section id="s3">
+    <h1 id="customMsg"></h1>
+  </section>
+
+  <!-- Stage 4 -->
+  <section id="s4">
+    <h1 id="finalText">Chúc bạn có một ngày thật tuyệt vời! 🎉💖</h1>
+    <canvas id="fireworks"></canvas>
+    <canvas id="confetti"></canvas>
+  </section>
+
+<script>
+  const s1=document.getElementById("s1"),s2=document.getElementById("s2"),s3=document.getElementById("s3"),s4=document.getElementById("s4");
+  const typingEl=document.getElementById("typing"),customMsg=document.getElementById("customMsg"),finalText=document.getElementById("finalText");
+  const text="Chúc bạn một ngày mới tràn đầy năng lượng ☀️"; let i=0;
+  function typing(){ if(i<text.length){ typingEl.textContent+=text.charAt(i); i++; setTimeout(typing,100);} }
+
+  document.getElementById("startBtn").onclick=()=>{ s1.classList.remove("active"); s2.classList.add("active"); typing(); }
+
+  // Easter Egg: click mặt trời 5 lần
+  let sunClicks=0;
+  document.querySelector(".sun").onclick=()=>{
+    sunClicks++;
+    if(sunClicks===5){
+      alert("🎁 Bí mật: Người xinh đẹp nhất hôm nay chính là bạn 😍");
+    }
+  };
+
+  // Nút troll "Không muốn vui vẻ"
+  const noFun=document.getElementById("noFun");
+  noFun.onmouseenter=()=>{ 
+    noFun.style.position="absolute"; 
+    noFun.style.left=Math.random()*80+"%"; 
+    noFun.style.top=Math.random()*80+"%"; 
+  };
+  noFun.onclick=()=>{ alert("Haha 🤣 bạn không thoát được vui vẻ đâu!"); }
+
+  // Chọn mood
+  document.querySelectorAll(".choice").forEach(btn=>{
+    btn.onclick=()=>{
+      s2.classList.remove("active"); s3.classList.add("active");
+      let type=btn.dataset.type;
+      if(type==="vui"){customMsg.textContent="Chúc bạn một ngày thật vui vẻ 😄";drop("🎈");}
+      if(type==="may"){customMsg.textContent="Chúc bạn may mắn suốt ngày 🍀";drop("🍀");}
+      if(type==="binh"){customMsg.textContent="Chúc bạn bình an và nhẹ nhàng 🌸";drop("🌸");}
+      // Popup đùa trước Stage 4
+      setTimeout(()=>{
+        if(confirm("Bạn có chắc sẵn sàng bùng nổ chưa? 😏")){
+          s3.classList.remove("active"); s4.classList.add("active"); bigExplosion();
+        } else {
+          alert("Không chắc cũng phải bùng nổ thôi 🤪");
+          s3.classList.remove("active"); s4.classList.add("active"); bigExplosion();
+        }
+      },5000);
+    }
+  });
+
+  // hiệu ứng rơi
+  function drop(icon){
+    for(let i=0;i<30;i++){
+      setTimeout(()=>{
+        const e=document.createElement("div");
+        e.className="fall"; e.textContent=icon;
+        e.style.left=Math.random()*100+"%";
+        e.style.animationDuration=(3+Math.random()*3)+"s";
+        document.body.appendChild(e);
+        setTimeout(()=>e.remove(),6000);
+      },i*200);
+    }
+  }
+
+  // Stage 4 bùng nổ
+  function bigExplosion(){
+    // glow text
+    setTimeout(()=>{
+      finalText.style.transform="scale(1.3)";
+      finalText.style.textShadow="0 0 30px #ff77ff,0 0 60px #ff0080";
+    },500);
+
+    // shake
+    function shake(){
+      document.body.style.transition="transform 0.1s";
+      document.body.style.transform="translate(10px,5px)";
+      setTimeout(()=>document.body.style.transform="translate(-10px,-5px)",100);
+      setTimeout(()=>document.body.style.transform="translate(0,0)",200);
+    }
+    for(let k=0;k<5;k++) setTimeout(shake,k*150);
+
+    // confetti
+    const c2=document.getElementById("confetti"),ctx2=c2.getContext("2d");
+    function resize2(){c2.width=innerWidth;c2.height=innerHeight;}
+    resize2();window.addEventListener("resize",resize2);
+    let conf=[];
+    function Conf(x,y){this.x=x;this.y=y;this.vx=Math.random()*2-1;this.vy=Math.random()*3+2;this.size=6;this.color=`hsl(${Math.random()*360},100%,50%)`;}
+    function loop2(){
+      ctx2.clearRect(0,0,c2.width,c2.height);
+      conf.forEach((p,i)=>{ctx2.fillStyle=p.color;ctx2.fillRect(p.x,p.y,p.size,p.size);p.x+=p.vx;p.y+=p.vy;if(p.y>c2.height)conf.splice(i,1);});
+      requestAnimationFrame(loop2);
+    }
+    loop2();
+    setInterval(()=>{for(let i=0;i<15;i++)conf.push(new Conf(Math.random()*c2.width,-10));},200);
+
+    // hearts
+    function spawnHeart(){
+      const h=document.createElement("div");
+      h.className="heart"; h.textContent="💖";
+      h.style.left=Math.random()*100+"%";
+      h.style.bottom="0px";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),4000);
+    }
+    setInterval(spawnHeart,400);
+
+    // fireworks
+    const canvas=document.getElementById("fireworks"),ctx=canvas.getContext("2d");let W,H;
+    function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}resize();window.addEventListener("resize",resize);
+    let particles=[];
+    function Particle(x,y){this.x=x;this.y=y;this.vx=Math.random()*6-3;this.vy=Math.random()*-6-3;this.alpha=1;this.color=`hsl(${Math.random()*360},100%,60%)`;}
+    function loop(){ctx.clearRect(0,0,W,H);particles.forEach((p,i)=>{ctx.fillStyle=p.color;ctx.globalAlpha=p.alpha;ctx.fillRect(p.x,p.y,3,3);p.x+=p.vx;p.y+=p.vy;p.alpha-=0.015;if(p.alpha<=0)particles.splice(i,1)});ctx.globalAlpha=1;requestAnimationFrame(loop);}
+    loop();
+    setInterval(()=>{const x=Math.random()*W,y=Math.random()*H/2;for(let i=0;i<80;i++)particles.push(new Particle(x,y));},500);
+  }
+</script>
+</body>
+</html>
