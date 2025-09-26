@@ -1,336 +1,248 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chào Ngày Mới 🎉 — Web Troll Nhiều Giai Đoạn</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Chào Ngày Mới 🎭 — Web Troll Nhiều Giai Đoạn</title>
   <style>
     :root{
-      --bg1:#0ea5e9; --bg2:#22c55e; --bg3:#f59e0b; --bg4:#a78bfa; --ink:#0b1020; --card:#ffffffee; --muted:#6b7280;
-      --radius:22px; --shadow:0 20px 40px rgba(0,0,0,.18);
+      --ink:#0f172a; --muted:#64748b; --card:#ffffffee; --shadow:0 24px 60px rgba(2,6,23,.18);
+      --p1:#22c55e; --p2:#0ea5e9; --p3:#f59e0b; --p4:#a78bfa; --ok:#10b981; --warn:#f59e0b; --bad:#ef4444;
+      --r:20px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color:#111827; background: radial-gradient(1200px 800px at 10% 10%, #ffffff22, transparent), linear-gradient(135deg,var(--bg1),var(--bg2));
-      overflow:hidden;
-    }
-    .wrap{position:relative; height:100%; width:100%; display:grid; place-items:center;}
-    .card{width:min(760px,92vw); background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:26px 26px 20px; position:relative; overflow:hidden}
-    h1{margin:0 0 10px; font-size:clamp(24px,4.6vw,40px); line-height:1.1}
-    p{margin:6px 0; color:var(--ink); opacity:.85}
-    .muted{color:var(--muted)}
-    .actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
-    button{appearance:none; border:0; border-radius:16px; padding:12px 18px; font-weight:700; cursor:pointer; background:#111827; color:#fff; box-shadow:0 10px 20px rgba(0,0,0,.18); transition:transform .12s ease, box-shadow .2s ease, background .2s}
-    button.secondary{background:#f3f4f6; color:#111827}
+    html,body{height:100%}
+    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:var(--ink);
+      background: radial-gradient(1200px 800px at 10% 10%, #ffffff22, transparent), linear-gradient(135deg,var(--p2),var(--p1)); overflow:hidden;}
+    .wrap{height:100%; display:grid; place-items:center; padding:20px}
+    .app{width:min(960px,95vw); background:var(--card); border-radius:24px; box-shadow:var(--shadow); overflow:hidden; position:relative; z-index:2}
+    header{display:flex; align-items:center; gap:10px; padding:14px 16px; background:linear-gradient(90deg,#111827,#0b1220); color:#fff}
+    .dot{width:10px;height:10px;border-radius:999px;background:#22c55e; box-shadow:0 0 0 6px #22c55e22}
+    .progressbar{flex:1; height:8px; background:#1f2937; border-radius:999px; overflow:hidden}
+    .progressbar>span{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--p2),var(--p4)); transition:width .3s}
+    .content{padding:22px; min-height:56vh}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    button{appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;background:#111827;color:#fff;box-shadow:0 10px 20px rgba(0,0,0,.18);transition:transform .12s ease}
+    button.secondary{background:#eef2f7;color:#0b1220}
+    button.ghost{background:transparent;color:#0b1220;box-shadow:none;text-decoration:underline}
     button:active{transform:translateY(1px)}
+    .muted{color:var(--muted)}
     .stage{display:none}
     .stage.active{display:block}
-    .floating{position:absolute; inset:0; pointer-events:none}
-    .runaway{position:relative}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#0b1220;color:#fff;font-size:12px}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    .card{background:#f8fafc; border-radius:var(--r); padding:14px}
+    .tip{font-size:12px;color:var(--muted)}
+    .hidden{display:none}
 
-    /* Stage 1 mini-quiz */
-    .quiz-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px}
-    .quiz-item{background:#f9fafb; padding:14px; border-radius:14px}
-    .progress{height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden}
-    .bar{height:100%; width:0; background:linear-gradient(90deg,var(--bg1),var(--bg3)); transition:width .3s}
+    /* STAGE 2 game */
+    .play{position:relative; height:360px; border-radius:18px; background:linear-gradient(180deg,#fef3c7,#fde68a); overflow:hidden}
+    .spark{position:absolute; width:34px; height:34px; border-radius:999px; display:grid; place-items:center; cursor:pointer;
+      background:radial-gradient(circle at 30% 30%, #fff, #f59e0b); box-shadow:0 10px 20px rgba(0,0,0,.15)}
+    .trail{position:absolute; pointer-events:none; font-size:18px; opacity:.9}
 
-    /* Stage 2 catch orbs */
-    .playarea{position:relative; height:360px; border-radius:18px; background:linear-gradient(180deg,#fef3c7,#fde68a); overflow:hidden}
-    .orb{position:absolute; width:36px; height:36px; border-radius:999px; display:grid; place-items:center; background:radial-gradient(circle at 30% 30%, #fff, #f59e0b); box-shadow:0 8px 16px rgba(0,0,0,.15); cursor:pointer}
+    /* STAGE 3 captcha */
+    .captcha{display:grid; gap:10px; max-width:560px}
+    .captcha img{border-radius:12px; width:100%; height:180px; object-fit:cover; filter:contrast(120%) saturate(110%)}
+    .opts{display:flex; flex-wrap:wrap; gap:8px}
+    .chk{display:inline-flex; gap:6px; align-items:center; background:#f1f5f9; padding:8px 10px; border-radius:999px; cursor:pointer}
 
-    /* Stage 3 celebration */
-    canvas#boom{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none}
-    .final{display:grid; gap:10px; text-align:center}
-    .time-badge{display:inline-grid; place-items:center; padding:6px 10px; border-radius:999px; background:#111827; color:#fff; font-size:12px}
-
-    /* Easter egg rain */
-    .rain{position:fixed; inset:0; pointer-events:none}
-    .drop{position:absolute; font-size:28px; animation:fall 3.5s linear forwards}
-    @keyframes fall{to{transform:translateY(110vh) rotate(360deg); opacity:.9}}
+    /* FINALE */
+    #fx{position:fixed; inset:0; pointer-events:none; z-index:1}
+    #confetti{position:fixed; inset:0; pointer-events:none; z-index:3; overflow:hidden}
+    .piece{position:absolute; width:12px; height:24px; opacity:.9; transform:rotate(15deg); animation:fallConfetti 3.5s linear forwards}
+    @keyframes fallConfetti{to{transform:translateY(110vh) rotate(720deg);}}
 
     /* Mobile */
-    @media (max-width:560px){
-      .quiz-grid{grid-template-columns:1fr}
-      .playarea{height:320px}
-    }
+    @media (max-width:680px){.grid{grid-template-columns:1fr}.content{padding:16px}}
   </style>
 </head>
 <body>
-  <canvas id="boom"></canvas>
-  <div class="rain" id="rain"></div>
+  <canvas id="fx"></canvas>
+  <div id="confetti"></div>
   <div class="wrap">
-    <div class="card" id="card">
-      <!-- Stage 0: Intro with runaway button -->
-      <section class="stage active" id="s0">
-        <h1>Chào buổi sáng! ☀️ Sẵn sàng “troll” nhẹ để tỉnh ngủ chưa?</h1>
-        <p class="muted">Web có <b>nhiều giai đoạn</b>. Mỗi giai đoạn là một bất ngờ nho nhỏ để đánh thức dopamine. Bắt được nút kia để bắt đầu 👇</p>
-        <div class="actions">
-          <button id="startBtn" class="runaway">BẮT ĐẦU NGÀY MỚI</button>
-          <button id="helpBtn" class="secondary">Gợi ý</button>
-        </div>
-        <p id="hint" class="muted" style="display:none">Mẹo: Đừng rượt… <b>giữ chuột</b> lên nút 1 giây để “thuần hóa” nó 😆</p>
-      </section>
+    <div class="app" id="app">
+      <header>
+        <div class="pill"><span class="dot" id="dot"></span><span id="status">Sẵn sàng troll nhẹ</span></div>
+        <div class="progressbar"><span id="prog"></span></div>
+        <button id="sound" class="secondary" title="Âm thanh on/off">🔈</button>
+      </header>
+      <div class="content">
 
-      <!-- Stage 1: Tiny quiz -->
-      <section class="stage" id="s1">
-        <h1>Kiểm tra nhanh: Bạn có phải “morning person”?</h1>
-        <div class="quiz-grid">
-          <div class="quiz-item">
-            <p><b>1)</b> Kéo thanh năng lượng buổi sáng của bạn:</p>
-            <input id="slider" type="range" min="0" max="100" value="20" style="width:100%">
-            <div class="progress" style="margin-top:8px"><div id="bar" class="bar"></div></div>
+        <!-- STAGE 0: Runaway + Long-press + Drag skip -->
+        <section class="stage active" id="s0">
+          <h2>Chào buổi sáng! ☀️ Khởi động “troll” cho tỉnh ngủ</h2>
+          <p class="muted">Giữ nút <b>1 giây</b> để thuần hóa, hoặc kéo ☕ vào ô để bỏ qua.</p>
+          <div class="actions">
+            <button id="start" class="primary">BẮT ĐẦU NGÀY MỚI</button>
+            <button id="skip0" class="secondary">Bỏ qua mini-game</button>
           </div>
-          <div class="quiz-item">
-            <p><b>2)</b> Chọn thức uống mở ngày:</p>
-            <div>
-              <label><input type="radio" name="drink" value="coffee"> ☕ Cà phê</label><br>
-              <label><input type="radio" name="drink" value="tea"> 🍵 Trà</label><br>
+          <div style="margin-top:14px; display:flex; gap:10px; align-items:center">
+            <div id="dragme" draggable="true" style="font-size:28px; cursor:grab">☕</div>
+            <div id="dropzone" style="border:2px dashed #94a3b8; border-radius:12px; padding:12px 16px; min-width:180px">Thả vào đây để qua</div>
+          </div>
+          <p class="tip" id="tip0">Nếu nút chạy trốn, thử giữ chuột/chạm 1s nhé.</p>
+        </section>
+
+        <!-- STAGE 1: Multi-interaction quiz -->
+        <section class="stage" id="s1">
+          <h2>Khởi động nhẹ — thói quen buổi sáng của bạn</h2>
+          <div class="grid">
+            <div class="card">
+              <p><b>1)</b> Kéo thanh năng lượng:</p>
+              <input id="energy" type="range" min="0" max="100" value="25" style="width:100%"/>
+              <div class="tip">Năng lượng hiện tại: <span id="energyVal">25</span>%</div>
+            </div>
+            <div class="card">
+              <p><b>2)</b> Chọn thức uống mở ngày:</p>
+              <label><input type="radio" name="drink" value="coffee"> ☕ Cà phê</label><br/>
+              <label><input type="radio" name="drink" value="tea"> 🍵 Trà</label><br/>
               <label><input type="radio" name="drink" value="water"> 💧 Nước lọc</label>
             </div>
+            <div class="card">
+              <p><b>3)</b> Câu đố: 7 giờ sáng mà đồng hồ báo 8 giờ. Làm gì?</p>
+              <select id="riddle" style="width:100%; padding:10px; border-radius:10px; border:1px solid #e5e7eb">
+                <option value="">— Chọn đáp án —</option>
+                <option>Vặn lại đồng hồ cho đúng rồi dậy</option>
+                <option>Ngủ tiếp vì còn sớm</option>
+                <option>Ăn sáng trước đã</option>
+              </select>
+            </div>
+            <div class="card">
+              <p><b>4)</b> Hứa cười ít nhất 1 lần hôm nay 😄</p>
+              <label style="display:inline-flex; align-items:center; gap:8px"><input id="promise" type="checkbox"> Tôi hứa!</label>
+              <p class="tip">Gõ <b>↑↑↓↓←→←→BA</b> để mở Trứng Phục Sinh.</p>
+            </div>
           </div>
-          <div class="quiz-item">
-            <p><b>3)</b> Câu đố: 7 giờ sáng mà đồng hồ báo 8 giờ. Bạn làm gì?</p>
-            <select id="riddle" style="width:100%; padding:10px; border-radius:10px; border:1px solid #e5e7eb">
-              <option value="">— Chọn đáp án —</option>
-              <option>Vặn lại cho đúng rồi dậy</option>
-              <option>Ngủ tiếp vì… còn sớm</option>
-              <option>Ăn sáng đã, tính sau</option>
-            </select>
+          <div class="actions">
+            <button id="to2" class="primary" disabled>Tiếp tục 👉</button>
+            <button id="chaos" class="secondary">Gây chút hỗn loạn 😈</button>
           </div>
-          <div class="quiz-item">
-            <p><b>4)</b> Tích vào ô này nếu bạn hứa sẽ cười ít nhất 1 lần hôm nay:</p>
-            <label style="display:inline-flex; align-items:center; gap:8px">
-              <input id="promise" type="checkbox"> Tôi hứa 😊
-            </label>
-          </div>
-        </div>
-        <div class="actions">
-          <button id="toS2">Tiếp tục</button>
-          <button class="secondary" id="chaos">Gây chút hỗn loạn 😈</button>
-        </div>
-      </section>
+          <p id="vmsg" class="muted hidden">✔️ Đủ điều kiện, bấm "Tiếp tục 👉" nhé.</p>
+        </section>
 
-      <!-- Stage 2: Catch the orbs -->
-      <section class="stage" id="s2">
-        <h1>Nạp năng lượng mặt trời 🌞</h1>
-        <p class="muted">Bắt <b>10 quả cầu</b> ánh sáng đang bay. Mỗi lần bắt được là một tia vitamin D!</p>
-        <div class="playarea" id="play"></div>
-        <div class="actions">
-          <button id="toS3" disabled>Đủ pin rồi — Bùng nổ!</button>
-          <span id="score" class="muted">0/10</span>
-        </div>
-      </section>
+        <!-- STAGE 2: Catch-the-sparks with timer -->
+        <section class="stage" id="s2">
+          <h2>Nạp vitamin D — bắt <span id="need">10</span> tia nắng trong <span id="time">20</span>s 🌞</h2>
+          <div class="play" id="play"></div>
+          <div class="actions">
+            <button id="to3" class="primary" disabled>Đủ pin — Qua tiếp 🎇</button>
+            <button id="retry2" class="secondary">Chơi lại</button>
+            <span id="score" class="muted">0/10</span>
+          </div>
+          <p class="tip">Tip: Trên điện thoại, chạm nhanh liên tục. Trên máy tính, dùng chuột.</p>
+        </section>
 
-      <!-- Stage 3: Finale -->
-      <section class="stage final" id="s3">
-        <span class="time-badge" id="badge">Chúc ngày mới tốt lành</span>
-        <h1 id="greet">Hôm nay sẽ là một ngày tuyệt vời! 🎉</h1>
-        <p class="muted">Bạn đã vượt qua chuỗi “troll” thành công. Hít một hơi sâu, mỉm cười và làm điều đầu tiên khiến bạn tự hào hôm nay nhé.</p>
-        <div class="actions" style="justify-content:center">
-          <button id="again" class="secondary">Làm lại từ đầu</button>
-          <button id="egg">🎮 Trứng Phục Sinh</button>
-        </div>
-      </section>
+        <!-- STAGE 3: Playful CAPTCHA -->
+        <section class="stage" id="s3">
+          <h2>Một bước cuối — xác minh bạn là "người vui vẻ" 🤖</h2>
+          <div class="captcha">
+            <img id="capimg" alt="captcha" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"/>
+            <p>Chọn <b>3 thứ khiến bạn vui</b> hôm nay:</p>
+            <div class="opts" id="opts"></div>
+            <div class="actions">
+              <button id="to4" class="primary" disabled>Hoàn tất ✅</button>
+              <button id="shuffle" class="secondary">Đổi câu khác</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- STAGE 4: Finale -->
+        <section class="stage" id="s4">
+          <span class="pill" id="badge">Chúc ngày mới tốt lành</span>
+          <h2 id="greet">Hôm nay sẽ là một ngày tuyệt vời! 🎉</h2>
+          <p class="muted">Bạn đã vượt qua chuỗi "troll" thành công. Hít một hơi sâu, mỉm cười và làm điều đầu tiên khiến bạn tự hào hôm nay nhé.</p>
+          <div class="actions">
+            <button id="again" class="secondary">Làm lại từ đầu</button>
+            <button id="egg">🎮 Trứng Phục Sinh</button>
+          </div>
+        </section>
+
+      </div>
     </div>
-    <div class="floating" id="float"></div>
   </div>
 
   <script>
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => document.querySelectorAll(sel);
-    const stages = [$('#s0'), $('#s1'), $('#s2'), $('#s3')];
-    let current = 0;
-    const go = i => { stages[current].classList.remove('active'); current=i; stages[current].classList.add('active'); };
+    // ===== Helpers & global state
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const stages = ['#s0','#s1','#s2','#s3','#s4'].map(id=>$(id));
+    const prog = $('#prog');
+    const statusEl = $('#status');
+    let stageIndex = 0;
+    const setProgress = (i)=>{ prog.style.width = (i/(stages.length-1))*100+'%'; };
+    const labels = ['Khởi động','Quiz','Bắt nắng','Captcha vui','Ăn mừng'];
+    const go = (i)=>{ stages[stageIndex].classList.remove('active'); stageIndex=i; stages[stageIndex].classList.add('active'); setProgress(i); statusEl.textContent = labels[i]; if(i===4) celebrate(); };
+    setProgress(0);
 
-    // Stage 0 — Runaway button
-    const startBtn = $('#startBtn');
-    const helpBtn = $('#helpBtn');
-    const hint = $('#hint');
-    let escapeCount = 0, tHold;
+    // ===== Sound (tiny beep via WebAudio)
+    let soundOn = false; let actx; function beep(freq=660, dur=0.07){ if(!soundOn) return; try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(); const g=actx.createGain(); o.frequency.value=freq; o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime+dur); setTimeout(()=>o.stop(), dur*1000);}catch(e){} }
+    $('#sound').addEventListener('click',()=>{soundOn=!soundOn; $('#sound').textContent = soundOn?'🔊':'🔈'; beep(880, .05)});
 
-    function randomPos(el){
-      const rect = el.getBoundingClientRect();
-      const W = window.innerWidth, H = window.innerHeight;
-      const x = Math.max(10, Math.min(W-rect.width-10, Math.random()*(W-rect.width)));
-      const y = Math.max(10, Math.min(H-rect.height-10, Math.random()*(H-rect.height)));
-      el.style.position='fixed'; el.style.left=x+'px'; el.style.top=y+'px';
-    }
+    // ===== STAGE 0 — Runaway + Long press + Drag to skip
+    const startBtn = $('#start'); const skip0 = $('#skip0'); const dragme = $('#dragme'); const dropzone = $('#dropzone'); const tip0=$('#tip0');
+    let holdTimer; let tamed=false;
+    function randomPos(el){ const rect = el.getBoundingClientRect(); const W = window.innerWidth, H = window.innerHeight; const x = Math.max(8, Math.min(W-rect.width-8, Math.random()*(W-rect.width))); const y = Math.max(80, Math.min(H-rect.height-8, Math.random()*(H-rect.height))); el.style.position='fixed'; el.style.left=x+'px'; el.style.top=y+'px'; }
+    startBtn.addEventListener('mouseenter',()=>{ if(!tamed) randomPos(startBtn); });
+    ;['mousedown','touchstart'].forEach(ev=>{ startBtn.addEventListener(ev,()=>{ clearTimeout(holdTimer); holdTimer=setTimeout(()=>{ tamed=true; startBtn.textContent='Vào luôn!'; tip0.textContent='Đã thuần hóa nút, bấm để vào 👉'; beep(880,.08); }, 900); }); });
+    ;['mouseup','mouseleave','touchend','touchcancel'].forEach(ev=>{ startBtn.addEventListener(ev,()=> clearTimeout(holdTimer)); });
+    startBtn.addEventListener('click',()=>{ if(tamed){ go(1); } else { randomPos(startBtn); tip0.classList.remove('hidden'); } });
+    dragme.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain','coffee'); });
+    dropzone.addEventListener('dragover', e=>{ e.preventDefault(); dropzone.style.borderColor='#22c55e'; });
+    dropzone.addEventListener('dragleave', ()=>{ dropzone.style.borderColor='#94a3b8'; });
+    dropzone.addEventListener('drop', e=>{ e.preventDefault(); go(1); beep(760,.07); dropzone.style.borderColor='#22c55e'; });
+    skip0.addEventListener('click', ()=>{ go(1); });
 
-    startBtn.addEventListener('mouseenter', () => {
-      if(!startBtn.dataset.tamed){
-        escapeCount++; randomPos(startBtn);
-        if(escapeCount===3) hint.style.display='block';
-      }
-    });
-    ['mousedown','touchstart'].forEach(ev=>{
-      startBtn.addEventListener(ev, ()=>{
-        tHold = setTimeout(()=>{ startBtn.dataset.tamed = '1'; startBtn.textContent='Vào luôn!'; }, 800);
-      });
-    });
-    ['mouseup','mouseleave','touchend','touchcancel'].forEach(ev=>{
-      startBtn.addEventListener(ev, ()=> clearTimeout(tHold));
-    });
-    startBtn.addEventListener('click', ()=>{
-      if(startBtn.dataset.tamed){
-        go(1);
-      } else {
-        randomPos(startBtn);
-        escapeCount++;
-        if(escapeCount>5) hint.style.display='block';
-      }
-    });
-    helpBtn.addEventListener('click',()=>{ hint.style.display = hint.style.display==='none'?'block':'none'; });
+    // ===== STAGE 1 — Quiz logic
+    const energy = $('#energy'); const energyVal = $('#energyVal');
+    const to2 = $('#to2'); const chaos = $('#chaos'); const promise = $('#promise'); const vmsg = $('#vmsg');
+    let drinkChosen=false, riddleOk=false;
+    energy.addEventListener('input',()=>{ energyVal.textContent = energy.value; if(parseInt(energy.value,10) > 40) beep(660,.04); validateS1(); });
+    $$('input[name="drink"]').forEach(r=> r.addEventListener('change',()=>{ drinkChosen=true; validateS1(); beep(520,.04);}));
+    $('#riddle').addEventListener('change',e=>{ riddleOk = e.target.value && e.target.value.toLowerCase().includes('vặn'); validateS1(); if(riddleOk) beep(740,.05); });
+    promise.addEventListener('change', validateS1);
+    function validateS1(){ const ok = (parseInt(energy.value,10)>=20) && drinkChosen && riddleOk && promise.checked; to2.disabled = !ok; vmsg.classList.toggle('hidden', !ok); }
+    chaos.addEventListener('click',()=>{ $$('.card').forEach((c)=>{ c.animate([{transform:'translate(0,0)'},{transform:`translate(${(Math.random()*8-4)}px, ${(Math.random()*8-4)}px)`},{transform:'translate(0,0)'}],{duration:300}); }); alert(['Ú òa!','Bất ngờ chưa!','Tỉnh chưa?'][Math.floor(Math.random()*3)]); beep(300,.05); });
+    to2.addEventListener('click',()=>{ go(2); startGame(); });
 
-    // Stage 1 — Tiny quiz
-    const slider = $('#slider');
-    const bar = $('#bar');
-    const toS2 = $('#toS2');
-    const chaos = $('#chaos');
-    const promise = $('#promise');
+    // ===== STAGE 2 — Catch sparks with timer
+    const play = $('#play'); const scoreEl = $('#score'); const to3 = $('#to3'); const retry2 = $('#retry2'); const needEl=$('#need'); const timeEl=$('#time');
+    let need=10, score=0, tLeft=20, timerId, moverId;
+    function startGame(){ need=10; score=0; tLeft=20; scoreEl.textContent='0/10'; needEl.textContent=need; timeEl.textContent=tLeft; to3.disabled=true; play.innerHTML=''; for(let i=0;i<12;i++) makeSpark(); clearInterval(timerId); clearInterval(moverId); timerId = setInterval(()=>{ tLeft--; timeEl.textContent=tLeft; if(tLeft<=0){ clearInterval(timerId); clearInterval(moverId); endGame(false); } },1000); moverId = setInterval(()=>{ $$('.spark').forEach(s=> moveSpark(s,true)); if(Math.random()<0.2 && $$('.spark').length<18) makeSpark(true); }, 850); play.onmousemove = e=> makeTrail(e.offsetX,e.offsetY); play.ontouchmove = e=>{ const t=e.touches[0]; const r=play.getBoundingClientRect(); makeTrail(t.clientX-r.left, t.clientY-r.top); } }
+    function makeSpark(tiny=false){ const s=document.createElement('div'); s.className='spark'; if(tiny){ s.style.width='26px'; s.style.height='26px'; } s.textContent = Math.random()>.7?'⭐':'☀️'; play.appendChild(s); moveSpark(s); s.addEventListener('click', ev=>{ ev.stopPropagation(); catchSpark(s); }, {once:true}); s.addEventListener('touchstart', ev=>{ ev.stopPropagation(); catchSpark(s); }, {once:true, passive:true}); }
+    function moveSpark(s, animate=false){ const r = play.getBoundingClientRect(); const x = Math.random()*(r.width-40); const y = Math.random()*(r.height-40); if(animate){ s.style.transition='transform .8s ease'; s.style.transform=`translate(${x}px,${y}px)`; } else { s.style.left=x+'px'; s.style.top=y+'px'; } }
+    function catchSpark(s){ s.remove(); score++; scoreEl.textContent = `${score}/10`; beep(760,.05); if(score>=need){ endGame(true); } }
+    function makeTrail(x,y){ const t=document.createElement('div'); t.className='trail'; t.textContent = Math.random()>.5?'✨':'💫'; t.style.left=x+'px'; t.style.top=y+'px'; play.appendChild(t); setTimeout(()=>t.remove(), 450); }
+    function endGame(win){ clearInterval(timerId); clearInterval(moverId); if(win){ to3.disabled=false; statusEl.textContent='Đủ pin — tiếp tục nào!'; } else { alert('Hết giờ! Chơi lại nhé.'); } }
+    retry2.addEventListener('click', startGame);
+    to3.addEventListener('click',()=>{ go(3); setupCaptcha(); });
 
-    slider.addEventListener('input',()=>{ bar.style.width=slider.value+'%'; });
+    // ===== STAGE 3 — Playful captcha
+    const feelings = ['Cà phê ngon','Bạn bè nhắn tin','Nắng nhẹ','Âm nhạc hay','Ăn sáng no','Tin vui','Tập thể dục','Khen ngợi ai đó','Giúp đỡ người khác','Đọc vài trang sách'];
+    const optsEl = $('#opts'); const to4 = $('#to4'); const shuffle = $('#shuffle');
+    function setupCaptcha(){ optsEl.innerHTML=''; to4.disabled=true; const arr = [...feelings].sort(()=>Math.random()-.5).slice(0,7); arr.forEach((txt,i)=>{ const id = 'c'+i; const w=document.createElement('label'); w.className='chk'; w.innerHTML = `<input type="checkbox" id="${id}"> <span>${txt}</span>`; optsEl.appendChild(w); w.querySelector('input').addEventListener('change', checkCaptcha); }); }
+    function checkCaptcha(){ const n = [...optsEl.querySelectorAll('input[type="checkbox"]')].filter(i=>i.checked).length; to4.disabled = n<3; if(!to4.disabled) beep(800,.06); }
+    shuffle.addEventListener('click', setupCaptcha);
+    to4.addEventListener('click',()=>{ go(4); celebrate(); });
 
-    toS2.addEventListener('click',()=>{
-      const drink = [...$$('input[name="drink"]')].find(r=>r.checked);
-      if(slider.value < 40){
-        alert('Năng lượng hơi thấp. Thêm chút nắng ở màn sau nhé!');
-      }
-      if(!drink){ alert('Chọn một thức uống mở ngày nào!'); return; }
-      if(!promise.checked){ alert('Tick vào lời hứa cười 1 lần đã nha 😄'); return; }
-      go(2); spawnOrbs();
-    });
-
-    // Chaos: shuffle cards & wobble
-    chaos.addEventListener('click',()=>{
-      $('.quiz-grid').style.transform='rotate('+(Math.random()>.5?'-':'')+ (5+Math.random()*5) +'deg)';
-      [...$$('.quiz-item')].forEach((card,i)=>{
-        card.style.transform='translate(' + (Math.random()*10-5) + 'px,' + (Math.random()*10-5) + 'px)';
-      });
-      const noises = ['Ố ồ!','Ú òa!','Hí hí!','Bất ngờ chưa!'];
-      alert(noises[Math.floor(Math.random()*noises.length)]);
-    });
-
-    // Stage 2 — Orbs game
-    const play = $('#play');
-    const scoreEl = $('#score');
-    const toS3 = $('#toS3');
-    let caught = 0, orbTimer;
-
-    function spawnOrbs(){
-      caught = 0; scoreEl.textContent='0/10'; toS3.disabled = true; play.innerHTML='';
-      for(let i=0;i<10;i++) makeOrb();
-      clearInterval(orbTimer);
-      orbTimer = setInterval(()=>{
-        // Move existing
-        $$('.orb').forEach(o=> moveOrb(o, true));
-        // Occasionally add more for chaos
-        if(Math.random()<0.15 && $$('.orb').length<16) makeOrb(true);
-      }, 900);
-    }
-
-    function makeOrb(tiny=false){
-      const o = document.createElement('div');
-      o.className='orb';
-      if(tiny){ o.style.width='24px'; o.style.height='24px'; }
-      o.textContent='☀️';
-      play.appendChild(o);
-      moveOrb(o);
-      o.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        o.remove();
-        caught++; scoreEl.textContent=caught+'/10';
-        flashCard();
-        if(caught>=10){ toS3.disabled=false; }
-      }, {once:true});
-    }
-
-    function moveOrb(o, animate=false){
-      const r = play.getBoundingClientRect();
-      const x = Math.random()*(r.width-40);
-      const y = Math.random()*(r.height-40);
-      if(animate){ o.style.transition='transform .8s ease'; o.style.transform = `translate(${x}px, ${y}px)`; }
-      else { o.style.left=x+'px'; o.style.top=y+'px'; }
-    }
-
-    function flashCard(){
-      const c = $('#card');
-      c.animate([{boxShadow:'var(--shadow)'},{boxShadow:'0 0 0 6px rgba(34,197,94,.35)'},{boxShadow:'var(--shadow)'}],{duration:450});
-    }
-
-    toS3.addEventListener('click', ()=>{ go(3); celebrate(); });
-
-    // Stage 3 — Fireworks + greeting
-    const canvas = $('#boom');
-    const ctx = canvas.getContext('2d');
-    let W, H, raf, sparks=[];
-    function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
-    resize(); window.addEventListener('resize', resize);
-
-    function fire(x,y,color){
-      const N = 50 + Math.random()*30;
-      for(let i=0;i<N;i++){
-        const a = Math.random()*Math.PI*2; const v = 2+Math.random()*4;
-        sparks.push({x,y,vx:Math.cos(a)*v, vy:Math.sin(a)*v, life:60+Math.random()*30, color});
-      }
-    }
-    function loop(){
-      ctx.clearRect(0,0,W,H);
-      for(let i=sparks.length-1;i>=0;i--){
-        const s=sparks[i]; s.x+=s.vx; s.y+=s.vy; s.vy+=0.05; s.life-=1.2;
-        ctx.globalAlpha = Math.max(s.life/90,0);
-        ctx.fillStyle = s.color; ctx.fillRect(s.x, s.y, 3, 3);
-        if(s.life<=0) sparks.splice(i,1);
-      }
-      raf = requestAnimationFrame(loop);
-    }
-    function celebrate(){
-      const now = new Date();
-      const hours = now.getHours();
-      const badge = $('#badge');
-      const greet = $('#greet');
-      const wish = hours<11? 'Buổi sáng rực rỡ': (hours<17? 'Buổi chiều rộn ràng':'Buổi tối thư thái');
-      badge.textContent = wish + ' — ' + now.toLocaleTimeString();
-      greet.textContent = (hours<12? 'Có cà phê chưa? ': 'Sẵn sàng tăng tốc? ') + 'Bắt đầu một ngày tuyệt diệu nào!';
-
-      // Fireworks bursts
-      for(let i=0;i<6;i++) setTimeout(()=>{
-        fire(Math.random()*W, Math.random()*H*0.6 + 60, `hsl(${Math.random()*360},90%,60%)`);
-      }, i*350);
-      cancelAnimationFrame(raf); loop();
-    }
-
+    // ===== FINALE — Fireworks + Confetti + Time-based greet + Easter Eggs
+    const fx = $('#fx'); const fctx = fx.getContext('2d'); function resize(){ fx.width = window.innerWidth; fx.height = window.innerHeight; } resize(); window.addEventListener('resize', resize);
+    let particles=[]; let raf;
+    function burst(x,y){ for(let i=0;i<80;i++){ const a=Math.random()*Math.PI*2, v=2+Math.random()*4, h=Math.random()*360; particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:90+Math.random()*40,color:`hsl(${h},90%,60%)`}); } }
+    function loop(){ fctx.clearRect(0,0,fx.width,fx.height); for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life-=1.2; fctx.globalAlpha=Math.max(p.life/100,0); fctx.fillStyle=p.color; fctx.fillRect(p.x,p.y,3,3); if(p.life<=0) particles.splice(i,1); } raf=requestAnimationFrame(loop); }
+    function confettiRain(){ const c=$('#confetti'); for(let i=0;i<120;i++){ const d=document.createElement('div'); d.className='piece'; d.style.left=Math.random()*100+'vw'; d.style.top='-5vh'; d.style.backgroundColor=`hsl(${Math.random()*360},90%,60%)`; d.style.animationDelay=(Math.random()*1.8)+'s'; d.style.width=(8+Math.random()*10)+'px'; d.style.height=(14+Math.random()*18)+'px'; c.appendChild(d); setTimeout(()=>d.remove(),4200); } }
+    function celebrate(){ const now = new Date(); const h = now.getHours(); const wish = h<11?'Buổi sáng rực rỡ':(h<17?'Buổi chiều rộn ràng':'Buổi tối thư thái'); $('#badge').textContent = `${wish} — ${now.toLocaleTimeString()}`; $('#greet').textContent = (h<12?'Có cà phê chưa? ':'Sẵn sàng tăng tốc? ') + 'Bắt đầu một ngày tuyệt diệu nào!'; cancelAnimationFrame(raf); for(let i=0;i<10;i++) setTimeout(()=>{ burst(Math.random()*fx.width, Math.random()*fx.height*0.7+40); beep(880,.05); }, i*300); loop(); confettiRain(); }
     $('#again').addEventListener('click',()=>{ go(0); });
 
-    // Easter egg: Konami Code -> coffee rain
-    const egg = $('#egg');
-    egg.addEventListener('click', coffeeRain);
-    const seq=["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-    let buf=[]; window.addEventListener('keydown',(e)=>{ buf.push(e.key); if(buf.join(',').includes(seq.join(','))){ coffeeRain(); buf=[]; } if(buf.length>12) buf.shift(); });
+    // Easter eggs
+    const seq=["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"]; let buf=[];
+    window.addEventListener('keydown',e=>{ buf.push(e.key); if(buf.slice(-seq.length).join(',')===seq.join(',')) coffeeRain(); if(buf.length>20) buf.shift(); });
+    $('#egg').addEventListener('click', coffeeRain);
+    function coffeeRain(){ for(let i=0;i<40;i++) setTimeout(()=>{ burst(Math.random()*fx.width, Math.random()*fx.height*0.5); }, i*40); for(let i=0;i<40;i++){ const d=document.createElement('div'); d.textContent = Math.random()>.5?'☕':'🫖'; d.style.position='fixed'; d.style.left=Math.random()*100+'vw'; d.style.top='-10vh'; d.style.fontSize=(20+Math.random()*16)+'px'; d.style.animation = 'fall 3.6s linear forwards'; document.body.appendChild(d); setTimeout(()=>d.remove(), 3800); } }
+    const style = document.createElement('style'); style.textContent='@keyframes fall{to{transform:translateY(110vh) rotate(360deg); opacity:.9}}'; document.head.appendChild(style);
 
-    function coffeeRain(){
-      const rain = $('#rain');
-      for(let i=0;i<40;i++){
-        const d = document.createElement('div'); d.className='drop'; d.textContent = Math.random()>.5?'☕':'🫖';
-        d.style.left = Math.random()*100+'vw'; d.style.top = '-10vh'; d.style.animationDelay = (Math.random()*1.2)+'s';
-        rain.appendChild(d); setTimeout(()=>d.remove(), 4000);
-      }
-    }
-
-    // Nice floating deco
-    const float = $('#float');
-    const deco = ['✨','🌤️','💫','🌈','🫧','🌻'];
-    for(let i=0;i<14;i++){
-      const s = document.createElement('div'); s.textContent = deco[i%deco.length]; s.style.position='absolute'; s.style.opacity=.5;
-      s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%'; s.style.transform='translate(-50%,-50%)'; s.style.fontSize=(18+Math.random()*20)+'px';
-      float.appendChild(s);
-      s.animate([
-        {transform:'translate(-50%,-50%) rotate(0deg)'},
-        {transform:'translate(-50%,-48%) rotate(10deg)'},
-        {transform:'translate(-50%,-50%) rotate(0deg)'}
-      ],{duration: 5000+Math.random()*3000, iterations: Infinity});
-    }
+    // Activate first stage
+    stages[0].classList.add('active');
   </script>
 </body>
 </html>
