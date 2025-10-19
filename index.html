@@ -17,339 +17,100 @@
     .btn{margin-top:18px;padding:12px 22px;border-radius:28px;color:#fff;background:linear-gradient(135deg,var(--rose),var(--rose-2));font-weight:700;box-shadow:0 8px 24px rgba(216,27,96,.32);transition:.25s transform;display:inline-flex;align-items:center;gap:.5rem}
     .btn:hover{transform:translateY(-1px) scale(1.02)}
     .btn-outline{background:#fff;color:var(--rose);border:2px solid var(--rose-2)}
-    .fade-in{animation:fadeIn .6s ease forwards}
-    @keyframes fadeIn{from{opacity:0;transform:translate(-50%,-48%)}to{opacity:1;transform:translate(-50%,-50%)}}
 
-    /* Stepper */
-    .stepper{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:9}
-    .dot{width:10px;height:10px;border-radius:999px;background:#ffd1e2;opacity:.65}
-    .dot.active{background:var(--rose);opacity:1}
-    .hint{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#fff;padding:8px 16px;border-radius:20px;box-shadow:0 8px 24px rgba(216,27,96,.2);z-index:8;opacity:0;animation:hint 7s ease forwards;color:var(--rose);font-weight:600}
-    @keyframes hint{0%{opacity:0;transform:translate(-50%,-6px)}10%,75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
-
-    /* Stage 2 falling */
     .falling{position:absolute;top:-80px;width:54px;user-select:none;animation:fall 9s linear forwards;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
     @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:.15}}
 
-    /* Popup (Stage 3) */
-    .popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);background:#fff;border-radius:24px;padding:20px;width:min(90vw,420px);text-align:center;box-shadow:0 20px 70px rgba(216,27,96,.4);z-index:20;opacity:0;pointer-events:none;transition:.3s ease}
-    .popup.active{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
-    .popup img{width:100%;border-radius:18px;margin-bottom:12px}
-    .popup p{line-height:1.6;font-weight:600}
-
-    /* Hearts & Fireworks */
-    .heart{position:absolute;pointer-events:none;animation:burst 1.5s ease-out forwards;font-size:20px}
-    @keyframes burst{0%{transform:translate(-50%,-50%) scale(.55);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.9);opacity:0}}
-    .fw{position:fixed;width:6px;height:6px;border-radius:50%;background:#ff80ab;animation:fw 1.2s ease-out forwards;pointer-events:none}
-    @keyframes fw{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
-
-    /* Stage 6 gift boxes */
     .gift-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
     .gift{width:120px;height:120px;border-radius:16px;background:#ffe2ec;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(216,27,96,.25);position:relative;overflow:hidden}
     .ribbon{position:absolute;width:20px;height:100%;background:var(--rose);left:calc(50% - 10px)}
     .ribbon:before{content:"";position:absolute;top:calc(50% - 10px);left:-50px;right:-50px;height:20px;background:var(--rose)}
-    .gift:hover{transform:translateY(-2px)}
     .box-lid{position:absolute;top:-4px;left:8px;right:8px;height:22px;border-radius:12px;background:linear-gradient(45deg,#ffc2d6,#ffa3c5)}
-    .sparkle{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.8;animation:sp 1.8s ease-out infinite}
-    @keyframes sp{from{transform:translateY(0) scale(.6)}to{transform:translateY(-26px) scale(1.2);opacity:0}}
 
-    /* Stage 7 floating wish */
-    .sky{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-    .float-text{position:absolute;left:50%;transform:translateX(-50%);color:var(--rose);font-weight:700;opacity:0;animation:floatUp 6s ease forwards;text-shadow:0 2px 0 #fff}
-    @keyframes floatUp{0%{bottom:-20px;opacity:0}20%{opacity:1}100%{bottom:84%;opacity:0}}
+    .flower-rise {position: fixed;left: 50%;bottom: 40%;transform: translateX(-50%) scale(0.8);width: 180px;opacity: 0;animation: flowerRise 2.4s ease-out forwards;z-index: 15;}
+    @keyframes flowerRise {0% {opacity: 0;transform: translate(-50%, 40%) scale(0.8);}50% {opacity: 1;transform: translate(-50%, -10%) scale(1);}100% {opacity: 0;transform: translate(-50%, -50%) scale(1.2);}}
 
-    @media (max-width:768px){.title{font-size:1.5rem}.desc{font-size:1.02rem}.gift{width:104px;height:104px}}
+    .envelope {position: relative;width: 240px;height: 180px;margin: 0 auto 20px;perspective: 1000px;}
+    .envelope-top {position: absolute;width: 100%;height: 100%;background: #ffc2d6;border-radius: 8px;transform-origin: top;transition: transform 0.8s ease;}
+    .envelope.open .envelope-top {transform: rotateX(150deg);}
+    .envelope-letter {position: absolute;inset: 0;background: #fff;border-radius: 8px;padding: 20px;box-shadow: 0 6px 20px rgba(0,0,0,0.2);transform: translateY(100%);opacity: 0;transition: all 0.8s ease 0.4s;}
+    .envelope.open .envelope-letter {transform: translateY(0);opacity: 1;}
+    .letter-text {font-size: 1.05rem;color: var(--rose);}
+    .letter-deco {margin-top: 12px;font-size: 1.3rem;}
   </style>
 </head>
 <body>
-  <!-- Sky for floating wishes -->
-  <div id="sky" class="sky"></div>
-
-  <!-- Progress stepper (8 steps) -->
-  <div id="stepper" class="stepper"></div>
-  <div class="hint">🌸 Hướng dẫn: Làm theo nút trên màn hình & chạm vào quà để khám phá!</div>
-
-  <!-- Stage 1 – Start -->
-  <section id="stage1" class="center fade-in">
-    <div class="title">Chúc mừng 20/10</div>
-    <p class="desc">Một ngày mới bắt đầu – ngày dành riêng cho bạn. Cùng bước vào hành trình nở hoa nhé! 💌</p>
-    <button id="btnStart" class="btn">Bắt đầu hành trình</button>
-  </section>
-
-  <!-- Stage 2 – Rain -->
-  <section id="stage2" class="center hidden">
-    <div class="title">Cơn mưa yêu thương 🌸</div>
-    <p class="desc">Chạm vào những món quà rơi xuống để nhận lời chúc đầu tiên (bắt 3 món)!</p>
-  </section>
-
-  <!-- Stage 3 – Popup (as overlay) -->
-  <div id="popup" class="popup">
-    <img id="popupImg" alt="gift" />
-    <p id="popupText"></p>
-    <button id="btnPopupNext" class="btn">Tiếp tục 🌺</button>
-  </div>
-
-  <!-- Stage 4 – Fireworks Thank-you -->
-  <section id="stage4" class="center hidden">
-    <div class="title">🌺 Cảm ơn bạn 🌺</div>
-    <p class="desc">Vì đã mang đến thế giới này sự dịu dàng, mạnh mẽ và yêu thương. Hãy đón nhận điều xinh xắn tiếp theo!</p>
-    <button id="btnToStage5" class="btn">Khoảnh khắc toả sáng ✨</button>
-  </section>
-
-  <!-- Stage 5 – Glow Transition (new explicit stage) -->
-  <section id="stage5" class="center hidden">
-    <div class="title">Khoảnh khắc toả sáng ✨</div>
-    <p class="desc">Mọi điều tốt đẹp đang ghé thăm. Sẵn sàng mở hộp quà bí mật nhé!</p>
-    <button id="btnToBox" class="btn">Mở hộp quà bí mật 🎁</button>
-  </section>
-
-  <!-- Stage 6 – Gift Boxes -->
-  <section id="stage6" class="center hidden">
+  <section id="stage6" class="center">
     <div class="title">Hộp quà bí mật 🎁</div>
-    <p class="desc">Chạm mở một trong ba hộp quà. Bên trong là điều xinh xắn dành cho bạn!</p>
+    <p class="desc">Chạm mở một trong ba hộp quà. Bên trong là bó hoa dành cho bạn!</p>
     <div id="giftWrap" class="gift-wrap">
       <div class="gift" data-i="0"><div class="box-lid"></div><div class="ribbon"></div></div>
       <div class="gift" data-i="1"><div class="box-lid"></div><div class="ribbon"></div></div>
       <div class="gift" data-i="2"><div class="box-lid"></div><div class="ribbon"></div></div>
     </div>
-    <button id="btnToWrite" class="btn">Viết lời chúc của bạn ✍️</button>
+    <button id="btnToLetter" class="btn hidden">Mở thiệp yêu thương 💌</button>
   </section>
 
-  <!-- Stage 7 – Write Wish -->
   <section id="stage7" class="center hidden">
-    <div class="title">Viết lời chúc</div>
-    <p class="desc">Gửi một lời nhắn ngắn gọn đến chính bạn hoặc ai đó mà bạn trân trọng. Lời chúc sẽ bay lên bầu trời! ✨</p>
-    <div class="wish-box">
-      <textarea id="wishInput" placeholder="Ví dụ: Chúc bạn luôn bình an và rực rỡ như hôm nay!"></textarea>
-      <button id="btnWish" class="btn">Thả lời chúc lên trời 💖</button>
+    <div class="title">💌 Mở thiệp yêu thương</div>
+    <div class="envelope" id="envelope">
+      <div class="envelope-top"></div>
+      <div class="envelope-letter">
+        <p class="letter-text">Chúc bạn luôn xinh đẹp, hạnh phúc và được yêu thương trọn vẹn mỗi ngày 🌷</p>
+        <div class="letter-deco">💖🌸💖</div>
+      </div>
     </div>
     <button id="btnToEnd" class="btn btn-outline">Kết thúc hành trình 🌷</button>
   </section>
 
-  <!-- Stage 8 – End & Share -->
-  <section id="stage8" class="center hidden">
-    <div class="title">💐 Chúc mừng 20/10 💐</div>
-    <p id="endDesc" class="desc">Mỗi bông hoa đều đẹp theo cách riêng. Và bạn cũng thế. Hãy lan tỏa yêu thương nhé!</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
-      <button id="btnShare" class="btn">📤 Chia sẻ thiệp</button>
-      <button id="btnReplay" class="btn btn-outline">🔁 Chơi lại hành trình</button>
-    </div>
-  </section>
-
-  <!-- Audio -->
-  <audio id="bgm" src="./assets/a.mp3" preload="auto"></audio>
-
   <script>
-    // ---------- Config ----------
-    const ASSETS = {
-      gifts: ["./assets/a1.jpg","./assets/a2.jpg","./assets/a3.jpg","./assets/a4.jpg"],
-      messages: [
-        "Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐",
-        "Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
-        "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖",
-        "Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
-      ]
-    };
-
-    // ---------- State ----------
-    let stage = 1;            // 1..8
-    let catched = 0;          // số quà đã bắt ở stage 2
-    let msgIndex = 0;         // index cho lời chúc
-    let dropTimer = null;     // interval rơi quà
-
-    // ---------- Elements ----------
-    const $ = (id) => document.getElementById(id);
     const E = {
-      sky: $("sky"), stepper: $("stepper"),
-      stage1: $("stage1"), stage2: $("stage2"), stage3: $("popup"), stage4: $("stage4"), stage5: $("stage5"), stage6: $("stage6"), stage7: $("stage7"), stage8: $("stage8"),
-      popup: $("popup"), popupImg: $("popupImg"), popupText: $("popupText"), btnPopupNext: $("btnPopupNext"),
-      btnStart: $("btnStart"), btnToStage5: $("btnToStage5"), btnToBox: $("btnToBox"), btnToWrite: $("btnToWrite"),
-      btnWish: $("btnWish"), btnToEnd: $("btnToEnd"), btnShare: $("btnShare"), btnReplay: $("btnReplay"),
-      wishInput: $("wishInput"), giftWrap: $("giftWrap"), bgm: $("bgm")
+      giftWrap: document.getElementById('giftWrap'),
+      btnToLetter: document.getElementById('btnToLetter'),
+      envelope: document.getElementById('envelope'),
+      btnToEnd: document.getElementById('btnToEnd')
     };
-
-    // ---------- Helpers ----------
-    function renderStepper(n){
-      const total = 8;
-      E.stepper.innerHTML = "";
-      for(let i=1;i<=total;i++){
-        const d = document.createElement("div");
-        d.className = "dot" + (i<=n?" active":"");
-        E.stepper.appendChild(d);
-      }
-    }
-
-    function showStage(n){
-      stage = n;
-      const ids = [1,2,4,5,6,7,8]; // stage 3 là popup overlay
-      ids.forEach(s=>{
-        const node = $("stage"+s);
-        if(!node) return;
-        if(s===n) node.classList.remove("hidden"); else node.classList.add("hidden");
-      });
-      if(n!==3) E.popup.classList.remove("active");
-      renderStepper(n);
-    }
 
     function heartBurst(x,y,count=10){
       for(let i=0;i<count;i++){
-        const h = document.createElement("div");
-        h.className = "heart"; h.textContent = "💖";
-        const a = Math.random()*Math.PI*2; const d = 60 + Math.random()*80;
-        h.style.left = x+"px"; h.style.top = y+"px";
-        h.style.setProperty("--dx", Math.cos(a)*d + "px");
-        h.style.setProperty("--dy", Math.sin(a)*d + "px");
+        const h = document.createElement('div');
+        h.textContent = '💖';
+        h.style.position='absolute';
+        h.style.left=x+'px';
+        h.style.top=y+'px';
+        h.style.fontSize='20px';
+        h.style.animation='burst 1.5s ease-out forwards';
+        const a=Math.random()*Math.PI*2,d=60+Math.random()*80;
+        h.style.setProperty('--dx',Math.cos(a)*d+'px');
+        h.style.setProperty('--dy',Math.sin(a)*d+'px');
         document.body.appendChild(h);
         setTimeout(()=>h.remove(),1500);
       }
     }
 
-    function fireworks(times=46){
-      for(let i=0;i<times;i++){
-        const f = document.createElement("div"); f.className = "fw";
-        const cx = window.innerWidth/2, cy = window.innerHeight/2;
-        f.style.left = cx+"px"; f.style.top = cy+"px";
-        const a = Math.random()*Math.PI*2; const dist = 110 + Math.random()*220;
-        f.style.setProperty("--x", Math.cos(a)*dist + "px");
-        f.style.setProperty("--y", Math.sin(a)*dist + "px");
-        document.body.appendChild(f);
-        setTimeout(()=>f.remove(),1200);
-      }
-    }
-
-    function spawnFalling(){
-      if(stage!==2) return;
-      const img = document.createElement("img");
-      img.src = ASSETS.gifts[Math.floor(Math.random()*ASSETS.gifts.length)];
-      img.className = "falling";
-      img.style.left = (Math.random()*(window.innerWidth-70)) + "px";
-      img.addEventListener("click", (e)=>{
-        if(img.parentNode) img.parentNode.removeChild(img);
-        catched++;
-        heartBurst(e.clientX, e.clientY, 12);
-        showPopup();
-      });
-      document.body.appendChild(img);
-      setTimeout(()=>{ if(img.parentNode) img.parentNode.removeChild(img); }, 9000);
-    }
-
-    function startRain(){
-      catched = 0;
-      if(dropTimer) clearInterval(dropTimer);
-      spawnFalling();
-      dropTimer = setInterval(spawnFalling, 1200);
-    }
-    function stopRain(){ if(dropTimer) { clearInterval(dropTimer); dropTimer=null; } }
-
-    function showPopup(){
-      // set stage = 3 for stepper, but keep current visible section
-      renderStepper(3);
-      E.popupImg.src = ASSETS.gifts[msgIndex % ASSETS.gifts.length];
-      E.popupText.innerHTML = ASSETS.messages[msgIndex % ASSETS.messages.length];
-      msgIndex++;
-      E.popup.classList.add("active");
-    }
-
-    function saveWishToSky(text){
-      const t = (text||"").trim();
-      if(!t) return;
-      localStorage.setItem("my_2010_wish", t);
-      const node = document.createElement("div");
-      node.className = "float-text";
-      node.style.fontSize = (16 + Math.random()*8) + "px";
-      node.style.left = (30 + Math.random()*40) + "%";
-      node.textContent = "“ " + t + " ”";
-      E.sky.appendChild(node);
-      setTimeout(()=>{ if(node.parentNode) node.parentNode.removeChild(node); }, 6000);
-    }
-
-    // ---------- Wire events ----------
-    E.btnStart && E.btnStart.addEventListener("click", ()=>{
-      try{ if(E.bgm && E.bgm.paused) E.bgm.play(); }catch{}
-      showStage(2);
-      startRain();
+    E.giftWrap.addEventListener('click',e=>{
+      const box=e.target.closest('.gift');
+      if(!box)return;
+      const lid=box.querySelector('.box-lid');
+      if(lid){lid.style.transition='transform .4s ease';lid.style.transform='translateY(-60px) rotate(-8deg)';}
+      const flower=document.createElement('img');
+      flower.src='./assets/bouquet.png';
+      flower.className='flower-rise';
+      document.body.appendChild(flower);
+      const r=box.getBoundingClientRect();
+      heartBurst(r.left+r.width/2,r.top+r.height/2,18);
+      setTimeout(()=>flower.remove(),3000);
+      setTimeout(()=>E.btnToLetter.classList.remove('hidden'),1000);
     });
 
-    E.btnPopupNext && E.btnPopupNext.addEventListener("click", ()=>{
-      E.popup.classList.remove("active");
-      if(stage===2 && catched>=3){
-        stopRain();
-        showStage(4);
-        fireworks();
-      } else {
-        // quay lại stage 2, cập nhật stepper
-        renderStepper(2);
-      }
+    E.btnToLetter.addEventListener('click',()=>{
+      document.getElementById('stage6').classList.add('hidden');
+      document.getElementById('stage7').classList.remove('hidden');
     });
 
-    // Stage 4 -> 5
-    E.btnToStage5 && E.btnToStage5.addEventListener("click", ()=>{ showStage(5); });
-
-    // Stage 5 -> 6
-    E.btnToBox && E.btnToBox.addEventListener("click", ()=>{
-      showStage(6);
-      // trang trí lấp lánh
-      E.giftWrap && [...E.giftWrap.querySelectorAll('.gift')].forEach(g=>{
-        for(let i=0;i<4;i++){
-          const s=document.createElement('div');
-          s.className='sparkle';
-          s.style.left=(20+Math.random()*80)+"px";
-          s.style.top=(60+Math.random()*30)+"px";
-          s.style.animationDelay=(Math.random()*1)+"s";
-          g.appendChild(s);
-        }
-      });
+    E.envelope.addEventListener('click',()=>{
+      E.envelope.classList.toggle('open');
     });
-
-    // Stage 6 gift click
-    E.giftWrap && E.giftWrap.addEventListener("click", (e)=>{
-      const box = e.target.closest('.gift');
-      if(!box) return;
-      const lid = box.querySelector('.box-lid');
-      if(lid){ lid.style.transition='transform .4s ease'; lid.style.transform='translateY(-46px) rotate(-6deg)'; }
-      const r = box.getBoundingClientRect();
-      heartBurst(r.left+r.width/2, r.top+r.height/2, 14);
-    });
-
-    // Stage 6 -> 7
-    E.btnToWrite && E.btnToWrite.addEventListener("click", ()=> showStage(7));
-
-    // Stage 7 wish
-    E.btnWish && E.btnWish.addEventListener("click", ()=>{
-      const text = (E.wishInput && E.wishInput.value) || 'Chúc bạn luôn bình an và rực rỡ!';
-      saveWishToSky(text);
-      if(E.wishInput) E.wishInput.value='';
-    });
-
-    // Stage 7 -> 8
-    E.btnToEnd && E.btnToEnd.addEventListener("click", ()=>{
-      const saved = localStorage.getItem('my_2010_wish');
-      showStage(8);
-      if(saved){ E.endDesc.innerHTML = "Lời chúc của bạn: <b>“"+ saved +"”</b><br/>Hãy lan tỏa yêu thương nhé!"; }
-    });
-
-    // Stage 8 share & replay
-    E.btnShare && E.btnShare.addEventListener("click", async ()=>{
-      const url = window.location.href.split('#')[0];
-      const text = '💌 Thiệp 20/10 cực xinh mình vừa nhận, cùng khám phá nhé!';
-      try{ if(navigator.share){ await navigator.share({title:'Thiệp 20/10 – Hành Trình Nở Hoa', text, url}); return; } }catch{}
-      try{ await navigator.clipboard.writeText(url); alert('Đã sao chép liên kết chia sẻ!'); }catch{ alert(url); }
-    });
-    E.btnReplay && E.btnReplay.addEventListener("click", ()=>{ msgIndex=0; catched=0; showStage(1); });
-
-    // Autoplay policy: play bgm on first user gesture anywhere
-    document.body.addEventListener('click', ()=>{ try{ if(E.bgm && E.bgm.paused) E.bgm.play(); }catch{} }, { once:true });
-
-    // Init
-    renderStepper(1);
-    showStage(1);
-
-    // ---------- Minimal dev sanity checks ----------
-    try{
-      console.assert(ASSETS.gifts.length>=3, 'Need at least 3 gift images');
-      console.assert(ASSETS.messages.length>=3, 'Need at least 3 messages');
-      console.assert(typeof showStage==='function', 'showStage exists');
-    }catch(e){ console.warn('Sanity checks:', e); }
   </script>
 </body>
 </html>
