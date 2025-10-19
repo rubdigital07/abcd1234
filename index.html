@@ -23,11 +23,39 @@
       z-index:2;animation:float 4s ease-in-out infinite alternate;
     }
     @keyframes float{from{transform:translate(-50%,-52%);}to{transform:translate(-50%,-48%);}}
-    .center-message strong{display:block;font-size:2rem;background:linear-gradient(45deg,#d81b60,#f48fb1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+    .center-message strong{
+      display:block;font-size:2rem;
+      background:linear-gradient(45deg,#d81b60,#f48fb1);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:10px;
+    }
+
+    .hint{
+      position:fixed;
+      top:20px;left:50%;
+      transform:translateX(-50%);
+      background:rgba(255,255,255,0.9);
+      padding:10px 25px;
+      border-radius:20px;
+      box-shadow:0 8px 30px rgba(216,27,96,0.2);
+      color:#d81b60;
+      font-weight:500;
+      z-index:10;
+      opacity:0;
+      animation:fadeInOut 7s ease forwards;
+    }
+    @keyframes fadeInOut{
+      0%{opacity:0;transform:translateX(-50%) translateY(-10px);}
+      10%,70%{opacity:1;transform:translateX(-50%) translateY(0);}
+      100%{opacity:0;transform:translateX(-50%) translateY(-10px);}
+    }
 
     .falling-item{
-      position:absolute;top:-80px;width:45px;animation:fall linear;cursor:pointer;z-index:2;
-      animation-duration:8s;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+      position:absolute;top:-80px;width:45px;
+      animation:fall linear;cursor:pointer;z-index:2;
+      animation-duration:8s;
+      filter:drop-shadow(0 5px 10px rgba(0,0,0,0.2));
       transition:transform 0.3s;
     }
     .falling-item:hover{transform:scale(1.2);}
@@ -37,71 +65,77 @@
     }
 
     .popup{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
-      background:white;border-radius:25px;box-shadow:0 15px 60px rgba(216,27,96,0.4);
-      width:90%;max-width:420px;text-align:center;z-index:10;padding:25px;
+      position:fixed;top:50%;left:50%;
+      transform:translate(-50%,-50%) scale(0);
+      background:white;border-radius:25px;
+      box-shadow:0 15px 60px rgba(216,27,96,0.4);
+      width:90%;max-width:420px;text-align:center;
+      z-index:10;padding:25px;
       transition:all 0.4s ease;
     }
     .popup.active{transform:translate(-50%,-50%) scale(1);}
     .popup img{width:100%;border-radius:20px;margin-bottom:15px;}
     .popup p{color:#d81b60;font-weight:500;line-height:1.5;}
     .popup button{
-      margin-top:15px;padding:10px 25px;border:none;border-radius:25px;
-      background:linear-gradient(135deg,#d81b60,#f06292);color:white;
-      font-weight:600;cursor:pointer;transition:0.3s;
+      margin-top:15px;padding:10px 25px;border:none;
+      border-radius:25px;background:linear-gradient(135deg,#d81b60,#f06292);
+      color:white;font-weight:600;cursor:pointer;transition:0.3s;
     }
-    .popup button:hover{transform:scale(1.05);background:linear-gradient(135deg,#ad1457,#e91e63);}
+    .popup button:hover{
+      transform:scale(1.05);
+      background:linear-gradient(135deg,#ad1457,#e91e63);
+    }
+
     .heart{
-      position:absolute;pointer-events:none;animation:popHeart 1.6s ease-out forwards;
+      position:absolute;pointer-events:none;
+      animation:popHeart 1.6s ease-out forwards;
     }
     @keyframes popHeart{
       0%{transform:translate(-50%,-50%) scale(0.5);opacity:1;}
       100%{transform:translate(var(--dx),var(--dy)) scale(2);opacity:0;}
     }
 
-    .input-name{
-      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      background:white;border-radius:25px;padding:8px 20px;
-      box-shadow:0 8px 30px rgba(216,27,96,0.2);display:flex;gap:10px;z-index:5;
-    }
-    .input-name input{
-      border:none;outline:none;font-family:"Mali";color:#d81b60;
-    }
-    .input-name button{
-      border:none;background:#d81b60;color:white;padding:6px 15px;border-radius:20px;cursor:pointer;
+    @media(max-width:768px){
+      .center-message{width:90%;padding:20px;font-size:1.1rem;}
+      .center-message strong{font-size:1.4rem;}
+      .hint{font-size:0.95rem;}
+      .popup{padding:20px;}
+      .popup p{font-size:1rem;}
     }
   </style>
 </head>
 <body>
 
+  <!-- Hướng dẫn thao tác -->
+  <div class="hint">🌸 Hướng dẫn: Hãy chạm vào những món quà rơi để nhận lời chúc nhé! 💌</div>
+
+  <!-- Thông điệp chính -->
   <div class="center-message" id="centerMessage">
     <strong>Chúc mừng 20/10</strong>
-    <span id="centerText">Chạm vào những món quà rơi để nhận lời chúc 💝</span>
+    <span id="centerText">Ngày Phụ nữ Việt Nam - Mong bạn luôn rạng rỡ như những bó hoa 💐</span>
   </div>
 
+  <!-- Popup lời chúc -->
   <div class="popup" id="popup">
     <img id="popupImage" src="">
     <p id="popupMessage"></p>
-    <button id="nextBtn">Tiếp tục 💖</button>
-  </div>
-
-  <div class="input-name">
-    <input type="text" id="nameInput" placeholder="Nhập tên người nhận..." />
-    <button id="saveName">Lưu</button>
+    <button id="nextBtn">Đóng 💖</button>
   </div>
 
   <audio id="bgm" src="./assets/a.mp3" preload="auto"></audio>
 
   <script>
-    const gifts = ["./assets/a1.jpg","./assets/a2.jpg","./assets/a3.jpg","./assets/a4.jpg"];
-    const messages = [
-      "Chúc <b>{name}</b> luôn xinh đẹp và ngập tràn yêu thương 💐",
-      "Hôm nay, mọi ánh sáng đều thuộc về <b>{name}</b> ✨",
-      "Cảm ơn <b>{name}</b> vì đã mang điều tốt đẹp đến thế giới này 💖",
-      "<b>{name}</b> chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
+    const gifts = [
+      "./assets/a1.jpg","./assets/a2.jpg",
+      "./assets/a3.jpg","./assets/a4.jpg"
     ];
-    let userName = "bạn";
-    let index = 0;
+
+    const messages = [
+      "Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐",
+      "Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
+      "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖",
+      "Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
+    ];
 
     const popup = document.getElementById("popup");
     const popupImage = document.getElementById("popupImage");
@@ -109,14 +143,9 @@
     const nextBtn = document.getElementById("nextBtn");
     const centerText = document.getElementById("centerText");
     const bgm = document.getElementById("bgm");
+    let index = 0;
 
-    // Save name
-    document.getElementById("saveName").onclick = () => {
-      const name = document.getElementById("nameInput").value.trim();
-      if(name){userName = name;centerText.innerHTML=`Xin chào, ${userName}! Hãy đón nhận món quà 20/10 💌`;}
-    };
-
-    // Falling gifts
+    // Tạo hiệu ứng rơi
     function createGift(){
       const el=document.createElement("img");
       el.src=gifts[Math.floor(Math.random()*gifts.length)];
@@ -132,20 +161,21 @@
     }
     setInterval(createGift,1200);
 
-    // Popup logic
+    // Popup
     function showPopup(){
       popup.classList.add("active");
       popupImage.src=gifts[index];
-      popupMessage.innerHTML=messages[index].replaceAll("{name}",userName);
+      popupMessage.innerHTML=messages[index];
       index=(index+1)%messages.length;
       bgm.play();
     }
+
     nextBtn.onclick=()=>{
       popup.classList.remove("active");
       centerText.innerHTML="❤️ "+popupMessage.innerHTML;
     };
 
-    // Hearts burst
+    // Hiệu ứng tim nổ
     function createHeartBurst(x,y){
       for(let i=0;i<12;i++){
         const h=document.createElement("div");
@@ -162,8 +192,9 @@
       }
     }
 
-    // Play bgm on first click anywhere
+    // Play nhạc khi click đầu tiên
     document.body.addEventListener("click",()=>{if(bgm.paused)bgm.play();});
   </script>
+
 </body>
 </html>
