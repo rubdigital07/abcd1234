@@ -356,4 +356,111 @@
     t.className="float-text";
     t.style.fontSize = (16 + Math.random()*8) + "px";
     t.style.left = (30 + Math.random()*40) + "%";
-    t.textContent = "“ " + text.t
+    t.textContent = "“ " + text.trim() + " ”";
+    E.sky.appendChild(t);
+    setTimeout(()=>t.remove(), 6000);
+  }
+
+  // ---------- Stage wiring ----------
+  // Stage 1 -> 2
+  E.btnStart.addEventListener("click", ()=>{
+    // start music on first interaction
+    if(E.bgm.paused){ try{ E.bgm.play(); }catch{} }
+    showStage(2);
+    startRain();
+  });
+
+  // Popup next (from stage 3)
+  E.btnPopupNext.addEventListener("click", ()=>{
+    E.popup.classList.remove("active");
+    if(stage===2 && catched>=3){
+      stopRain();
+      showStage(4);
+      fireworks();
+    }
+  });
+
+  // Stage 4 -> 6
+  E.btnToBox.addEventListener("click", ()=>{
+    showStage(6);
+    // add sparkles on gifts
+    [...E.giftWrap.querySelectorAll(".gift")].forEach(g=>{
+      for(let i=0;i<4;i++){
+        const s=document.createElement("div");
+        s.className="sparkle";
+        s.style.left = (20 + Math.random()*80) + "px";
+        s.style.top = (60 + Math.random()*30) + "px";
+        s.style.animationDelay = (Math.random()*1)+"s";
+        g.appendChild(s);
+      }
+    });
+  });
+
+  // Stage 6 gift open
+  E.giftWrap.addEventListener("click", (e)=>{
+    const box = e.target.closest(".gift");
+    if(!box) return;
+    // lid animation
+    const lid = box.querySelector(".box-lid");
+    lid.style.transition="transform .4s ease";
+    lid.style.transform="translateY(-46px) rotate(-6deg)";
+    // burst
+    const rect = box.getBoundingClientRect();
+    heartBurst(rect.left+rect.width/2, rect.top+rect.height/2, 14);
+  });
+
+  // Stage 6 -> 7
+  E.btnToWrite.addEventListener("click", ()=> showStage(7));
+
+  // Stage 7: write wish to sky
+  E.btnWish.addEventListener("click", ()=>{
+    const text = E.wishInput.value || "Chúc bạn luôn bình an và rực rỡ!";
+    saveWishToSky(text);
+    E.wishInput.value="";
+  });
+
+  // Stage 7 -> 8
+  E.btnToEnd.addEventListener("click", ()=>{
+    const saved = localStorage.getItem("my_2010_wish");
+    showStage(8);
+    if(saved){
+      E.endDesc.innerHTML = "Lời chúc của bạn: <b>“"+ saved +"”</b><br/>Hãy lan tỏa yêu thương nhé!";
+    }
+  });
+
+  // Stage 8 share & replay
+  E.btnShare.addEventListener("click", async ()=>{
+    const url = window.location.href.split("#")[0];
+    const text = "💌 Thiệp 20/10 cực xinh mình vừa nhận, cùng khám phá nhé!";
+    try{
+      if(navigator.share){
+        await navigator.share({title:"Thiệp 20/10 – Hành Trình Nở Hoa", text, url});
+      }else{
+        await navigator.clipboard.writeText(url);
+        alert("Đã sao chép liên kết chia sẻ!");
+      }
+    }catch{
+      await navigator.clipboard.writeText(url);
+      alert("Đã sao chép liên kết chia sẻ!");
+    }
+  });
+  E.btnReplay.addEventListener("click", ()=>{
+    showStage(1);
+    msgIndex=0; catched=0;
+  });
+
+  // play bgm on first body click (autoplay policy)
+  document.body.addEventListener("click", ()=>{ if(E.bgm.paused){ try{E.bgm.play();}catch{}} }, { once:true });
+
+  // init
+  showStage(1);
+
+  // ------------- Minimal sanity checks (in dev console) -------------
+  try{
+    console.assert(typeof showStage === "function", "Test: showStage exists");
+    console.assert(ASSETS.gifts.length>=3, "Test: need at least 3 gift images");
+    console.assert(ASSETS.messages.length>=3, "Test: need at least 3 messages");
+  }catch(e){ console.warn("Sanity checks warning:", e); }
+</script>
+</body>
+</html>
