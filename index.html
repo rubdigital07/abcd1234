@@ -3,62 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no" />
-  <title>Thiệp 20/10 – Hành Trình Nở Hoa 🌸</title>
-  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Thiệp 20/10 – Hành Trình Nở Hoa 💐</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet" />
+
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{--rose:#d81b60;--rose-2:#f06292;--bg1:#fff0f5;--bg2:#ffeaf0}
+    :root{--rose:#d81b60;--rose2:#f06292;--bg1:#fff0f5;--bg2:#ffeaf0}
     body{font-family:"Mali",cursive;background:linear-gradient(135deg,var(--bg1),var(--bg2));height:100vh;overflow:hidden;color:var(--rose)}
     button{cursor:pointer;border:none;outline:none}
-    .hidden{display:none !important}
-    .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,.86);border-radius:28px;padding:28px 32px;text-align:center;box-shadow:0 20px 60px rgba(216,27,96,.28);backdrop-filter:saturate(1.1) blur(6px);width:min(92vw,720px)}
-    .title{font-weight:700;font-size:2rem;background:linear-gradient(45deg,var(--rose),var(--rose-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+    .hidden{display:none!important}
+    .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.95);opacity:0;
+      background:rgba(255,255,255,.88);border-radius:28px;padding:28px 32px;text-align:center;
+      box-shadow:0 20px 60px rgba(216,27,96,.28);backdrop-filter:saturate(1.1) blur(6px);
+      width:min(92vw,720px);transition:all .6s ease}
+    .center.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+    .title{font-weight:700;font-size:2rem;background:linear-gradient(45deg,var(--rose),var(--rose2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
     .desc{font-size:1.1rem;line-height:1.65}
-    .btn{margin-top:18px;padding:12px 22px;border-radius:28px;color:#fff;background:linear-gradient(135deg,var(--rose),var(--rose-2));font-weight:700;box-shadow:0 8px 24px rgba(216,27,96,.32);transition:.25s transform;display:inline-flex;align-items:center;gap:.5rem}
+    .btn{margin-top:18px;padding:12px 22px;border-radius:28px;color:#fff;
+      background:linear-gradient(135deg,var(--rose),var(--rose2));font-weight:700;
+      box-shadow:0 8px 24px rgba(216,27,96,.32);transition:.25s transform;display:inline-flex;align-items:center;gap:.5rem}
     .btn:hover{transform:translateY(-1px) scale(1.02)}
-    .btn-outline{background:#fff;color:var(--rose);border:2px solid var(--rose-2)}
-    .fade-in{animation:fadeIn .6s ease forwards}
-    @keyframes fadeIn{from{opacity:0;transform:translate(-50%,-48%)}to{opacity:1;transform:translate(-50%,-50%)}}
+    .btn-outline{background:#fff;color:var(--rose);border:2px solid var(--rose2)}
+
+    /* Tim */
+    .heart{position:absolute;pointer-events:none;animation:burst 1.5s ease-out forwards;font-size:20px}
+    @keyframes burst{0%{transform:translate(-50%,-50%) scale(.55);opacity:1}
+      100%{transform:translate(var(--dx),var(--dy)) scale(1.9);opacity:0}}
 
     /* Quà rơi */
-    .falling{position:absolute;top:-80px;width:54px;user-select:none;animation:fall 9s linear forwards;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
-    @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:.15}}
-
-    /* Tim nổ */
-    .heart{position:absolute;pointer-events:none;animation:burst 1.5s ease-out forwards;font-size:20px}
-    @keyframes burst{0%{transform:translate(-50%,-50%) scale(.55);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.9);opacity:0}}
+    .falling{position:absolute;top:-80px;width:54px;user-select:none;
+      animation:fall 9s linear forwards;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+    @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}
+      100%{transform:translateY(110vh) rotate(360deg);opacity:.15}}
 
     /* Hộp quà */
     .gift-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
-    .gift{width:120px;height:120px;border-radius:16px;background:#ffe2ec;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(216,27,96,.25);position:relative;overflow:hidden}
+    .gift{width:120px;height:120px;border-radius:16px;background:#ffe2ec;
+      display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(216,27,96,.25);
+      position:relative;overflow:hidden}
     .ribbon{position:absolute;width:20px;height:100%;background:var(--rose);left:calc(50% - 10px)}
-    .ribbon:before{content:"";position:absolute;top:calc(50% - 10px);left:-50px;right:-50px;height:20px;background:var(--rose)}
-    .box-lid{position:absolute;top:-4px;left:8px;right:8px;height:22px;border-radius:12px;background:linear-gradient(45deg,#ffc2d6,#ffa3c5)}
-    .flower-rise {position: fixed;left: 50%;bottom: 40%;transform: translateX(-50%) scale(0.8);width: 180px;opacity: 0;animation: flowerRise 2.4s ease-out forwards;z-index: 15;}
-    @keyframes flowerRise {0% {opacity: 0;transform: translate(-50%, 40%) scale(0.8);}50% {opacity: 1;transform: translate(-50%, -10%) scale(1);}100% {opacity: 0;transform: translate(-50%, -50%) scale(1.2);}}
+    .ribbon:before{content:"";position:absolute;top:calc(50% - 10px);left:-50px;right:-50px;
+      height:20px;background:var(--rose)}
+    .box-lid{position:absolute;top:-4px;left:8px;right:8px;height:22px;border-radius:12px;
+      background:linear-gradient(45deg,#ffc2d6,#ffa3c5)}
 
-    /* Thiệp yêu thương */
-    .envelope {position: relative;width: 240px;height: 180px;margin: 0 auto 20px;perspective: 1000px;}
-    .envelope-top {position: absolute;width: 100%;height: 100%;background: #ffc2d6;border-radius: 8px;transform-origin: top;transition: transform 0.8s ease;}
-    .envelope.open .envelope-top {transform: rotateX(150deg);}
-    .envelope-letter {position: absolute;inset: 0;background: #fff;border-radius: 8px;padding: 20px;box-shadow: 0 6px 20px rgba(0,0,0,0.2);transform: translateY(100%);opacity: 0;transition: all 0.8s ease 0.4s;}
-    .envelope.open .envelope-letter {transform: translateY(0);opacity: 1;}
-    .letter-text {font-size: 1.05rem;color: var(--rose);}
-    .letter-deco {margin-top: 12px;font-size: 1.3rem;}
+    /* Hoa + ánh sáng */
+    .flower-rise{position:fixed;left:50%;top:65%;transform:translateX(-50%) scale(.8);
+      width:220px;opacity:0;z-index:100;animation:flowerRise 3s ease-out forwards;pointer-events:none}
+    @keyframes flowerRise{
+      0%{opacity:0;transform:translate(-50%,30%) scale(.8)}
+      20%{opacity:1;transform:translate(-50%,0) scale(1)}
+      60%{opacity:1;transform:translate(-50%,-15%) scale(1.05)}
+      100%{opacity:0;transform:translate(-50%,-60%) scale(1.2)}}
+    .glow{position:fixed;left:50%;top:50%;width:400px;height:400px;transform:translate(-50%,-50%);
+      background:radial-gradient(circle,rgba(255,182,193,.5)0%,rgba(255,192,203,.1)70%,transparent 100%);
+      border-radius:50%;opacity:0;z-index:50;animation:glowEffect 3s ease-out forwards;pointer-events:none}
+    @keyframes glowEffect{
+      0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+      40%{opacity:.6;transform:translate(-50%,-50%) scale(1.1)}
+      100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+
+    /* Thiệp */
+    .envelope{position:relative;width:240px;height:180px;margin:0 auto 20px;perspective:1000px}
+    .envelope-top{position:absolute;width:100%;height:100%;background:#ffc2d6;border-radius:8px;
+      transform-origin:top;transition:transform .8s ease}
+    .envelope.open .envelope-top{transform:rotateX(150deg)}
+    .envelope-letter{position:absolute;inset:0;background:#fff;border-radius:8px;padding:20px;
+      box-shadow:0 6px 20px rgba(0,0,0,.2);transform:translateY(100%);opacity:0;
+      transition:all .8s ease .4s}
+    .envelope.open .envelope-letter{transform:translateY(0);opacity:1}
+    .letter-text{font-size:1.05rem;color:var(--rose)}
+    .letter-deco{margin-top:12px;font-size:1.3rem}
   </style>
 </head>
+
 <body>
   <!-- Stage 1 -->
-  <section id="stage1" class="center fade-in">
+  <section id="stage1" class="center show">
     <div class="title">Chúc mừng 20/10</div>
-    <p class="desc">Một ngày mới bắt đầu – ngày dành riêng cho bạn. Cùng bước vào hành trình nở hoa nhé! 💌</p>
+    <p class="desc">Một ngày đặc biệt dành riêng cho bạn – cùng bắt đầu hành trình nở hoa nhé 💌</p>
     <button id="btnStart" class="btn">Bắt đầu hành trình</button>
   </section>
 
   <!-- Stage 2 -->
   <section id="stage2" class="center hidden">
     <div class="title">Cơn mưa yêu thương 🌸</div>
-    <p class="desc">Chạm vào những món quà rơi xuống để nhận lời chúc đầu tiên (bắt 3 món)!</p>
+    <p class="desc">Chạm vào 3 món quà rơi xuống để nhận những lời chúc đầu tiên!</p>
   </section>
 
   <!-- Popup -->
@@ -72,23 +103,23 @@
   <!-- Stage 4 -->
   <section id="stage4" class="center hidden">
     <div class="title">🌺 Cảm ơn bạn 🌺</div>
-    <p class="desc">Vì bạn đã mang đến thế giới này sự dịu dàng, mạnh mẽ và yêu thương. Hãy đón nhận điều xinh xắn tiếp theo!</p>
+    <p class="desc">Vì bạn đã mang đến thế giới này sự dịu dàng, mạnh mẽ và yêu thương.</p>
     <button id="btnToBox" class="btn">Mở hộp quà bí mật 🎁</button>
   </section>
 
-  <!-- Stage 6 – Hộp quà -->
+  <!-- Stage 6 -->
   <section id="stage6" class="center hidden">
     <div class="title">Hộp quà bí mật 🎁</div>
-    <p class="desc">Chạm mở một trong ba hộp quà. Bên trong là bó hoa dành cho bạn!</p>
+    <p class="desc">Chạm vào một hộp để xem điều bất ngờ dành cho bạn!</p>
     <div id="giftWrap" class="gift-wrap">
-      <div class="gift" data-i="0"><div class="box-lid"></div><div class="ribbon"></div></div>
-      <div class="gift" data-i="1"><div class="box-lid"></div><div class="ribbon"></div></div>
-      <div class="gift" data-i="2"><div class="box-lid"></div><div class="ribbon"></div></div>
+      <div class="gift"><div class="box-lid"></div><div class="ribbon"></div></div>
+      <div class="gift"><div class="box-lid"></div><div class="ribbon"></div></div>
+      <div class="gift"><div class="box-lid"></div><div class="ribbon"></div></div>
     </div>
     <button id="btnToLetter" class="btn hidden">Mở thiệp yêu thương 💌</button>
   </section>
 
-  <!-- Stage 7 – Thiệp yêu thương -->
+  <!-- Stage 7 -->
   <section id="stage7" class="center hidden">
     <div class="title">💌 Mở thiệp yêu thương</div>
     <div class="envelope" id="envelope">
@@ -104,7 +135,7 @@
   <!-- Stage 8 -->
   <section id="stage8" class="center hidden">
     <div class="title">💐 Chúc mừng 20/10 💐</div>
-    <p class="desc">Mỗi bông hoa đều đẹp theo cách riêng. Và bạn cũng thế. Hãy lan tỏa yêu thương nhé!</p>
+    <p class="desc">Mỗi bông hoa đều đẹp theo cách riêng – và bạn cũng thế. Hãy lan tỏa yêu thương nhé!</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
       <button id="btnShare" class="btn">📤 Chia sẻ thiệp</button>
       <button id="btnReplay" class="btn btn-outline">🔁 Chơi lại hành trình</button>
@@ -114,133 +145,51 @@
   <audio id="bgm" src="./assets/a.mp3" preload="auto"></audio>
 
   <script>
-    const gifts = ["./assets/a1.jpg","./assets/a2.jpg","./assets/a3.jpg","./assets/a4.jpg"];
-    const messages = [
-      "Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐",
-      "Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
-      "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖",
-      "Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
-    ];
+    function $(id){return document.getElementById(id);}
+    const gifts=["./assets/a1.jpg","./assets/a2.jpg","./assets/a3.jpg","./assets/a4.jpg"];
+    const messages=["Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐","Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
+      "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖","Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"];
+    const E={bgm:$("bgm"),stage1:$("stage1"),stage2:$("stage2"),popup:$("popup"),popupImg:$("popupImg"),popupText:$("popupText"),
+      stage4:$("stage4"),stage6:$("stage6"),stage7:$("stage7"),stage8:$("stage8"),btnStart:$("btnStart"),btnPopupNext:$("btnPopupNext"),
+      btnToBox:$("btnToBox"),btnToLetter:$("btnToLetter"),btnToEnd:$("btnToEnd"),btnShare:$("btnShare"),btnReplay:$("btnReplay"),
+      giftWrap:$("giftWrap"),envelope:$("envelope")};
+    let catched=0,msgIndex=0,timer=null;
 
-    const E = {
-      bgm: document.getElementById("bgm"),
-      stage1: document.getElementById("stage1"),
-      stage2: document.getElementById("stage2"),
-      popup: document.getElementById("popup"),
-      popupImg: document.getElementById("popupImg"),
-      popupText: document.getElementById("popupText"),
-      stage4: document.getElementById("stage4"),
-      stage6: document.getElementById("stage6"),
-      stage7: document.getElementById("stage7"),
-      stage8: document.getElementById("stage8"),
-      btnStart: document.getElementById("btnStart"),
-      btnPopupNext: document.getElementById("btnPopupNext"),
-      btnToBox: document.getElementById("btnToBox"),
-      btnToLetter: document.getElementById("btnToLetter"),
-      btnToEnd: document.getElementById("btnToEnd"),
-      btnShare: document.getElementById("btnShare"),
-      btnReplay: document.getElementById("btnReplay"),
-      giftWrap: document.getElementById("giftWrap"),
-      envelope: document.getElementById("envelope")
-    };
+    function showStage(n){["stage1","stage2","popup","stage4","stage6","stage7","stage8"].forEach(id=>{
+      E[id].classList.remove("show");E[id].classList.add("hidden");});
+      const s=E["stage"+n];s.classList.remove("hidden");setTimeout(()=>s.classList.add("show"),30);}
+    function heartBurst(x,y,count=10){for(let i=0;i<count;i++){const h=document.createElement("div");h.textContent="💖";
+      h.className="heart";const a=Math.random()*Math.PI*2,d=60+Math.random()*80;
+      h.style.left=x+"px";h.style.top=y+"px";h.style.setProperty("--dx",Math.cos(a)*d+"px");
+      h.style.setProperty("--dy",Math.sin(a)*d+"px");document.body.appendChild(h);setTimeout(()=>h.remove(),1500);}}
+    function spawnFalling(){const img=document.createElement("img");img.src=gifts[Math.floor(Math.random()*gifts.length)];
+      img.className="falling";img.style.left=Math.random()*(window.innerWidth-70)+"px";
+      img.onclick=e=>{img.remove();catched++;heartBurst(e.clientX,e.clientY,10);showPopup();};
+      document.body.appendChild(img);setTimeout(()=>img.remove(),9000);}
+    function startRain(){catched=0;timer=setInterval(spawnFalling,1200);}
+    function stopRain(){clearInterval(timer);}
+    function showPopup(){E.stage2.classList.add("hidden");E.popup.classList.remove("hidden");
+      E.popupImg.src=gifts[msgIndex%gifts.length];E.popupText.textContent=messages[msgIndex%messages.length];msgIndex++;}
 
-    let catched = 0, msgIndex = 0, dropTimer = null;
-
-    function showStage(n) {
-      ["stage1","stage2","popup","stage4","stage6","stage7","stage8"]
-      .forEach(id => E[id].classList.add("hidden"));
-      E["stage"+n].classList.remove("hidden");
-    }
-
-    function heartBurst(x,y,count=10){
-      for(let i=0;i<count;i++){
-        const h=document.createElement("div");
-        h.textContent="💖";
-        h.className="heart";
-        const a=Math.random()*Math.PI*2,d=60+Math.random()*80;
-        h.style.left=x+"px";h.style.top=y+"px";
-        h.style.setProperty("--dx",Math.cos(a)*d+"px");
-        h.style.setProperty("--dy",Math.sin(a)*d+"px");
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),1500);
-      }
-    }
-
-    function spawnFalling(){
-      const img=document.createElement("img");
-      img.src=gifts[Math.floor(Math.random()*gifts.length)];
-      img.className="falling";
-      img.style.left=Math.random()*(window.innerWidth-70)+"px";
-      img.onclick=e=>{
-        img.remove();
-        catched++;
-        heartBurst(e.clientX,e.clientY,10);
-        showPopup();
-      };
-      document.body.appendChild(img);
-      setTimeout(()=>img.remove(),9000);
-    }
-
-    function startRain(){
-      catched=0;
-      dropTimer=setInterval(spawnFalling,1200);
-    }
-    function stopRain(){clearInterval(dropTimer);dropTimer=null;}
-
-    function showPopup(){
-      E.stage2.classList.add("hidden");
-      E.popup.classList.remove("hidden");
-      E.popupImg.src=gifts[msgIndex%gifts.length];
-      E.popupText.textContent=messages[msgIndex%messages.length];
-      msgIndex++;
-    }
-
-    E.btnStart.onclick=()=>{
-      E.bgm.play();
-      showStage(2);
-      startRain();
-    };
-
-    E.btnPopupNext.onclick=()=>{
-      E.popup.classList.add("hidden");
-      if(catched>=3){
-        stopRain();
-        showStage(4);
-      } else E.stage2.classList.remove("hidden");
-    };
-
+    E.btnStart.onclick=async()=>{try{await E.bgm.play().catch(()=>{});}catch{}showStage(2);setTimeout(startRain,400);}
+    E.btnPopupNext.onclick=()=>{E.popup.classList.add("hidden");if(catched>=3){stopRain();showStage(4);}else E.stage2.classList.remove("hidden");}
     E.btnToBox.onclick=()=>showStage(6);
 
-    // Hộp quà mở ra bó hoa
-    E.giftWrap.onclick=(e)=>{
-      const box=e.target.closest(".gift");
-      if(!box)return;
-      const lid=box.querySelector(".box-lid");
-      if(lid){lid.style.transition="transform .4s ease";lid.style.transform="translateY(-60px) rotate(-8deg)";}
-      const flower=document.createElement("img");
-      flower.src="./assets/bouquet.png";
-      flower.className="flower-rise";
-      document.body.appendChild(flower);
-      const r=box.getBoundingClientRect();
-      heartBurst(r.left+r.width/2,r.top+r.height/2,16);
-      setTimeout(()=>flower.remove(),3000);
-      setTimeout(()=>E.btnToLetter.classList.remove("hidden"),1000);
-    };
-
+    E.giftWrap.onclick=e=>{const box=e.target.closest(".gift");if(!box)return;
+      const lid=box.querySelector(".box-lid");if(lid){lid.style.transition="transform .4s ease";lid.style.transform="translateY(-70px) rotate(-6deg)";}
+      const rect=box.getBoundingClientRect();heartBurst(rect.left+rect.width/2,rect.top+rect.height/2,14);
+      const flower=document.createElement("img");flower.src="./assets/bouquet.png";flower.className="flower-rise";
+      flower.onerror=()=>{flower.remove();const fb=document.createElement("div");fb.textContent="💐";
+        fb.style.cssText="position:fixed;left:50%;top:60%;transform:translate(-50%,-50%);font-size:120px;animation:flowerRise 3s ease-out forwards;z-index:100;";
+        document.body.appendChild(fb);setTimeout(()=>fb.remove(),3000);};
+      document.body.appendChild(flower);const glow=document.createElement("div");glow.className="glow";document.body.appendChild(glow);
+      setTimeout(()=>glow.remove(),3000);setTimeout(()=>E.btnToLetter.classList.remove("hidden"),1800);setTimeout(()=>flower.remove(),3200);}
     E.btnToLetter.onclick=()=>showStage(7);
-
     E.envelope.onclick=()=>E.envelope.classList.toggle("open");
-
     E.btnToEnd.onclick=()=>showStage(8);
-
-    E.btnShare.onclick=async()=>{
-      const url=window.location.href;
-      const text="💌 Thiệp 20/10 cực xinh mình vừa nhận, cùng khám phá nhé!";
-      if(navigator.share){await navigator.share({title:"Thiệp 20/10",text,url});}
-      else{await navigator.clipboard.writeText(url);alert("Đã sao chép liên kết chia sẻ!");}
-    };
-
-    E.btnReplay.onclick=()=>{msgIndex=0;catched=0;showStage(1);};
+    E.btnShare.onclick=async()=>{const url=window.location.href;text="💌 Thiệp 20/10 cực xinh mình vừa nhận, cùng khám phá nhé!";
+      if(navigator.share)await navigator.share({title:"Thiệp 20/10",text,url});else{await navigator.clipboard.writeText(url);alert("Đã sao chép liên kết!");}}
+    E.btnReplay.onclick=()=>{msgIndex=0;catched=0;showStage(1);}
     document.body.addEventListener("click",()=>{if(E.bgm.paused)E.bgm.play();},{once:true});
   </script>
 </body>
