@@ -1,200 +1,241 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thiệp 20/10 Tương Tác 🌸</title>
-  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      font-family:"Mali",cursive;
-      background:linear-gradient(135deg,#fff0f5,#ffeaf0);
-      overflow:hidden;height:100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thiệp 20/10 – Hành Trình Yêu Thương 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:"Mali",cursive;
+  background:linear-gradient(135deg,#fff0f5,#ffeaf0);
+  overflow:hidden;height:100vh;color:#c2185b;
+}
+button{cursor:pointer;outline:none;border:none;}
+.hidden{display:none;}
+.fade-in{animation:fadeIn 1s ease forwards;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-    .center-message{
-      position:absolute;top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      background:rgba(255,255,255,0.85);
-      padding:30px 40px;border-radius:25px;
-      text-align:center;color:#c2185b;
-      box-shadow:0 20px 50px rgba(216,27,96,0.3);
-      z-index:2;animation:float 4s ease-in-out infinite alternate;
-    }
-    @keyframes float{from{transform:translate(-50%,-52%);}to{transform:translate(-50%,-48%);}}
-    .center-message strong{
-      display:block;font-size:2rem;
-      background:linear-gradient(45deg,#d81b60,#f48fb1);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      margin-bottom:10px;
-    }
-
-    .hint{
-      position:fixed;
-      top:20px;left:50%;
-      transform:translateX(-50%);
-      background:rgba(255,255,255,0.9);
-      padding:10px 25px;
-      border-radius:20px;
-      box-shadow:0 8px 30px rgba(216,27,96,0.2);
-      color:#d81b60;
-      font-weight:500;
-      z-index:10;
-      opacity:0;
-      animation:fadeInOut 7s ease forwards;
-    }
-    @keyframes fadeInOut{
-      0%{opacity:0;transform:translateX(-50%) translateY(-10px);}
-      10%,70%{opacity:1;transform:translateX(-50%) translateY(0);}
-      100%{opacity:0;transform:translateX(-50%) translateY(-10px);}
-    }
-
-    .falling-item{
-      position:absolute;top:-80px;width:45px;
-      animation:fall linear;cursor:pointer;z-index:2;
-      animation-duration:8s;
-      filter:drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-      transition:transform 0.3s;
-    }
-    .falling-item:hover{transform:scale(1.2);}
-    @keyframes fall{
-      0%{transform:translateY(0)rotate(0deg);opacity:1;}
-      100%{transform:translateY(100vh)rotate(360deg);opacity:0;}
-    }
-
-    .popup{
-      position:fixed;top:50%;left:50%;
-      transform:translate(-50%,-50%) scale(0);
-      background:white;border-radius:25px;
-      box-shadow:0 15px 60px rgba(216,27,96,0.4);
-      width:90%;max-width:420px;text-align:center;
-      z-index:10;padding:25px;
-      transition:all 0.4s ease;
-    }
-    .popup.active{transform:translate(-50%,-50%) scale(1);}
-    .popup img{width:100%;border-radius:20px;margin-bottom:15px;}
-    .popup p{color:#d81b60;font-weight:500;line-height:1.5;}
-    .popup button{
-      margin-top:15px;padding:10px 25px;border:none;
-      border-radius:25px;background:linear-gradient(135deg,#d81b60,#f06292);
-      color:white;font-weight:600;cursor:pointer;transition:0.3s;
-    }
-    .popup button:hover{
-      transform:scale(1.05);
-      background:linear-gradient(135deg,#ad1457,#e91e63);
-    }
-
-    .heart{
-      position:absolute;pointer-events:none;
-      animation:popHeart 1.6s ease-out forwards;
-    }
-    @keyframes popHeart{
-      0%{transform:translate(-50%,-50%) scale(0.5);opacity:1;}
-      100%{transform:translate(var(--dx),var(--dy)) scale(2);opacity:0;}
-    }
-
-    @media(max-width:768px){
-      .center-message{width:90%;padding:20px;font-size:1.1rem;}
-      .center-message strong{font-size:1.4rem;}
-      .hint{font-size:0.95rem;}
-      .popup{padding:20px;}
-      .popup p{font-size:1rem;}
-    }
-  </style>
+.center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;background:rgba(255,255,255,0.85);
+  padding:30px 40px;border-radius:25px;
+  box-shadow:0 20px 50px rgba(216,27,96,0.3);
+}
+.center strong{
+  display:block;font-size:2rem;
+  background:linear-gradient(45deg,#d81b60,#f48fb1);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.center p{margin-top:10px;font-size:1.1rem;line-height:1.6;}
+.btn{
+  margin-top:20px;padding:10px 25px;border-radius:25px;
+  background:linear-gradient(135deg,#d81b60,#f06292);color:white;
+  font-weight:600;box-shadow:0 5px 20px rgba(216,27,96,0.3);
+  transition:0.3s;
+}
+.btn:hover{transform:scale(1.05);}
+.falling-item{
+  position:absolute;top:-80px;width:45px;
+  animation:fall linear;animation-duration:8s;z-index:2;
+  filter:drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+}
+@keyframes fall{
+  0%{transform:translateY(0)rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh)rotate(360deg);opacity:0;}
+}
+.popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:white;border-radius:25px;box-shadow:0 15px 60px rgba(216,27,96,0.4);
+  width:90%;max-width:420px;text-align:center;z-index:10;padding:25px;
+  transition:all 0.4s ease;
+}
+.popup.active{transform:translate(-50%,-50%) scale(1);}
+.popup img{width:100%;border-radius:20px;margin-bottom:15px;}
+.popup p{line-height:1.6;font-weight:500;}
+.heart{
+  position:absolute;pointer-events:none;
+  animation:popHeart 1.6s ease-out forwards;
+}
+@keyframes popHeart{
+  0%{transform:translate(-50%,-50%) scale(0.5);opacity:1;}
+  100%{transform:translate(var(--dx),var(--dy)) scale(2);opacity:0;}
+}
+.firework{
+  position:fixed;width:6px;height:6px;border-radius:50%;
+  background:#ff80ab;animation:fw 1.2s ease-out forwards;pointer-events:none;
+}
+@keyframes fw{
+  from{transform:translateY(0)scale(1);opacity:1;}
+  to{transform:translate(var(--x),var(--y))scale(0);opacity:0;}
+}
+.share-section{
+  text-align:center;position:absolute;bottom:20px;width:100%;
+}
+.share-section button{
+  background:white;color:#d81b60;border:2px solid #f06292;
+  border-radius:25px;padding:8px 20px;margin:5px;
+}
+@media(max-width:768px){
+  .center{width:90%;padding:20px;}
+  .center strong{font-size:1.4rem;}
+}
+</style>
 </head>
 <body>
 
-  <!-- Hướng dẫn thao tác -->
-  <div class="hint">🌸 Hướng dẫn: Hãy chạm vào những món quà rơi để nhận lời chúc nhé! 💌</div>
+<!-- Giai đoạn 1: mở đầu -->
+<div class="center" id="stage1">
+  <strong>Chúc mừng 20/10</strong>
+  <p>Ngày Phụ nữ Việt Nam – Hành trình nhỏ gửi đến bạn những điều thật đẹp 💕</p>
+  <button class="btn" id="startBtn">Bắt đầu hành trình 💌</button>
+</div>
 
-  <!-- Thông điệp chính -->
-  <div class="center-message" id="centerMessage">
-    <strong>Chúc mừng 20/10</strong>
-    <span id="centerText">Ngày Phụ nữ Việt Nam - Mong bạn luôn rạng rỡ như những bó hoa 💐</span>
+<!-- Giai đoạn 2: quà rơi -->
+<div class="center hidden" id="stage2">
+  <strong>Cơn mưa yêu thương 🌸</strong>
+  <p>Hãy chạm vào những món quà rơi xuống để nhận lời chúc!</p>
+</div>
+
+<!-- Popup lời chúc -->
+<div class="popup" id="popup">
+  <img id="popupImage" src="">
+  <p id="popupMessage"></p>
+  <button class="btn" id="nextBtn">Xem điều bất ngờ tiếp theo 🌸</button>
+</div>
+
+<!-- Giai đoạn 4: pháo hoa -->
+<div class="center hidden" id="stage4">
+  <strong>🌺 Cảm ơn bạn 🌺</strong>
+  <p>Vì đã mang đến thế giới này sự dịu dàng, mạnh mẽ và yêu thương.  
+  Chúc bạn luôn hạnh phúc trong hành trình của chính mình!</p>
+  <button class="btn" id="shareBtn">Đi đến lời chúc cuối cùng 💖</button>
+</div>
+
+<!-- Giai đoạn 5: kết thúc & chia sẻ -->
+<div class="center hidden" id="stage5">
+  <strong>💐 Chúc mừng 20/10 💐</strong>
+  <p>Hãy lan tỏa yêu thương bằng cách chia sẻ thiệp này đến những người phụ nữ bạn trân trọng!</p>
+  <div class="share-section">
+    <button onclick="shareCard()">📤 Chia sẻ thiệp</button>
+    <button onclick="window.location.reload()">🔁 Xem lại hành trình</button>
   </div>
+</div>
 
-  <!-- Popup lời chúc -->
-  <div class="popup" id="popup">
-    <img id="popupImage" src="">
-    <p id="popupMessage"></p>
-    <button id="nextBtn">Đóng 💖</button>
-  </div>
+<audio id="bgm" src="./assets/a.mp3" preload="auto"></audio>
 
-  <audio id="bgm" src="./assets/a.mp3" preload="auto"></audio>
+<script>
+const gifts=["./assets/a1.jpg","./assets/a2.jpg","./assets/a3.jpg","./assets/a4.jpg"];
+const messages=[
+  "Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐",
+  "Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
+  "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖",
+  "Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
+];
+let index=0;
 
-  <script>
-    const gifts = [
-      "./assets/a1.jpg","./assets/a2.jpg",
-      "./assets/a3.jpg","./assets/a4.jpg"
-    ];
+const bgm=document.getElementById("bgm");
+const stage1=document.getElementById("stage1");
+const stage2=document.getElementById("stage2");
+const popup=document.getElementById("popup");
+const popupImage=document.getElementById("popupImage");
+const popupMessage=document.getElementById("popupMessage");
+const nextBtn=document.getElementById("nextBtn");
+const stage4=document.getElementById("stage4");
+const stage5=document.getElementById("stage5");
 
-    const messages = [
-      "Chúc bạn luôn xinh đẹp và ngập tràn yêu thương 💐",
-      "Hôm nay, mọi ánh sáng đều thuộc về bạn ✨",
-      "Cảm ơn bạn vì đã mang điều tốt đẹp đến thế giới này 💖",
-      "Bạn chính là đoá hoa đẹp nhất của ngày hôm nay 🌸"
-    ];
+document.getElementById("startBtn").onclick=()=>{
+  bgm.play();
+  stage1.classList.add("hidden");
+  stage2.classList.remove("hidden");
+  startFallingGifts();
+};
 
-    const popup = document.getElementById("popup");
-    const popupImage = document.getElementById("popupImage");
-    const popupMessage = document.getElementById("popupMessage");
-    const nextBtn = document.getElementById("nextBtn");
-    const centerText = document.getElementById("centerText");
-    const bgm = document.getElementById("bgm");
-    let index = 0;
+function startFallingGifts(){
+  const drop=setInterval(()=>{
+    if(stage2.classList.contains("hidden")){clearInterval(drop);return;}
+    createGift();
+  },1200);
+}
 
-    // Tạo hiệu ứng rơi
-    function createGift(){
-      const el=document.createElement("img");
-      el.src=gifts[Math.floor(Math.random()*gifts.length)];
-      el.classList.add("falling-item");
-      el.style.left=Math.random()*(window.innerWidth-50)+"px";
-      el.addEventListener("click",(e)=>{
-        createHeartBurst(e.clientX,e.clientY);
-        el.remove();
-        showPopup();
-      });
-      document.body.appendChild(el);
-      setTimeout(()=>el.remove(),8000);
-    }
-    setInterval(createGift,1200);
+function createGift(){
+  const el=document.createElement("img");
+  el.src=gifts[Math.floor(Math.random()*gifts.length)];
+  el.classList.add("falling-item");
+  el.style.left=Math.random()*(window.innerWidth-50)+"px";
+  el.addEventListener("click",(e)=>{
+    createHeartBurst(e.clientX,e.clientY);
+    el.remove();
+    showPopup();
+  });
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),8000);
+}
 
-    // Popup
-    function showPopup(){
-      popup.classList.add("active");
-      popupImage.src=gifts[index];
-      popupMessage.innerHTML=messages[index];
-      index=(index+1)%messages.length;
-      bgm.play();
-    }
+function showPopup(){
+  popup.classList.add("active");
+  popupImage.src=gifts[index];
+  popupMessage.innerHTML=messages[index];
+  index=(index+1)%messages.length;
+}
 
-    nextBtn.onclick=()=>{
-      popup.classList.remove("active");
-      centerText.innerHTML="❤️ "+popupMessage.innerHTML;
-    };
+nextBtn.onclick=()=>{
+  popup.classList.remove("active");
+  stage2.classList.add("hidden");
+  stage4.classList.remove("hidden");
+  createFireworks();
+};
 
-    // Hiệu ứng tim nổ
-    function createHeartBurst(x,y){
-      for(let i=0;i<12;i++){
-        const h=document.createElement("div");
-        h.className="heart";
-        h.textContent="💖";
-        const a=Math.random()*2*Math.PI;
-        const d=Math.random()*80+40;
-        h.style.left=x+"px";
-        h.style.top=y+"px";
-        h.style.setProperty('--dx',Math.cos(a)*d+'px');
-        h.style.setProperty('--dy',Math.sin(a)*d+'px');
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),1500);
-      }
-    }
+function createHeartBurst(x,y){
+  for(let i=0;i<10;i++){
+    const h=document.createElement("div");
+    h.className="heart";h.textContent="💖";
+    const a=Math.random()*2*Math.PI;
+    const d=Math.random()*80+40;
+    h.style.left=x+"px";
+    h.style.top=y+"px";
+    h.style.setProperty('--dx',Math.cos(a)*d+'px');
+    h.style.setProperty('--dy',Math.sin(a)*d+'px');
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1500);
+  }
+}
 
-    // Play nhạc khi click đầu tiên
-    document.body.addEventListener("click",()=>{if(bgm.paused)bgm.play();});
-  </script>
+function createFireworks(){
+  for(let i=0;i<50;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left=window.innerWidth/2+"px";
+    f.style.top=window.innerHeight/2+"px";
+    const angle=Math.random()*2*Math.PI;
+    const dist=Math.random()*200+100;
+    f.style.setProperty('--x',Math.cos(angle)*dist+'px');
+    f.style.setProperty('--y',Math.sin(angle)*dist+'px');
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1200);
+  }
+}
+
+document.getElementById("shareBtn").onclick=()=>{
+  stage4.classList.add("hidden");
+  stage5.classList.remove("hidden");
+};
+
+function shareCard(){
+  const text="💌 Thiệp 20/10 cực xinh mình vừa nhận! Hãy cùng khám phá nhé 👉 ";
+  const url=window.location.href;
+  if(navigator.share){
+    navigator.share({title:"Thiệp 20/10",text,url});
+  }else{
+    navigator.clipboard.writeText(url);
+    alert("Đã sao chép liên kết chia sẻ!");
+  }
+}
+
+// nhạc tự bật sau click đầu
+document.body.addEventListener("click",()=>{if(bgm.paused)bgm.play();});
+</script>
 
 </body>
 </html>
